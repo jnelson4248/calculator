@@ -9,7 +9,25 @@
     <!--___NOTES____ideas to implement_____________________________
 
 /////////////    FUNCTIONALITY ISSUES - IMPORTANT  ///////////////////////
+display update:
+- limit number of digits you can enter (cur.length < someNumber)
+- remove 0 before adding new numbers.
+- don't let SIGN change 0 to -0
+- keep zero if first digit is Decimal point (eg:  0.3984 and not .3984)
 
+function updateDisplay(newContent)
+  -
+
+function isNonZeroString() :
+  - fails if input contains letters (can make more robust?)
+
+
+indexOf (in updateDisplay...when formatting) - only accounts for there being
+        one decimal point...not two.
+
+
+decimal point IS now changing "decimalPosition" in updateCurNumString()
+    but, it's not printing to the display.sud
 
 
 //////////////  BEAUTIFICATIN / SPACING  /////////////////////////////////

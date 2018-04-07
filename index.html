@@ -9,31 +9,37 @@
 
   <body>
     <div class="container-main">
+      <button id="testButton" type="button" name="button">Test Button</button>
       <div class="container-display">
-        <div class="display">
-          99,999,837.01
-        </div>
-      </div>
+        <div id="display" class="display">999,999,999,837.01</div>
+
+       </div>
         <div class="container-keys">
-        <div class="box box-reset">Reset</div>
-        <div class="box box-clear">Clear</div>
-        <div class="box box-divide right">/</div>
-        <div class="box box-seven">7</div>
-        <div class="box box-eight">8</div>
-        <div class="box box-nine">9</div>
-        <div class="box box-multiply right">*</div>
-        <div class="box box-four">4</div>
-        <div class="box box-five">5</div>
-        <div class="box box-six">6</div>
-        <div class="box box-subtract right">-</div>
-        <div class="box box-one">1</div>
-        <div class="box box-two">2</div>
-        <div class="box box-three">3</div>
-        <div class="box box-add right">+</div>
-        <div class="box box-sign">+/-</div>
-        <div class="box box-zero">0</div>
-        <div class="box box-decimal">.</div>
-        <div class="box box-equal right">=</div>
+          <div id="controlKeys" class="keys-area-top">
+            <div id="keyReset" class="key" data-key="RESET">Reset</div>
+            <div id="keyClear" class="key" data-key="CLEAR">Clear</div>
+          </div>
+          <div id="numberKeys" class="keys-area-main">
+            <div class="key" data-key="7">7</div>
+            <div class="key" data-key="8">8</div>
+            <div class="key" data-key="9">9</div>
+            <div class="key" data-key="4">4</div>
+            <div class="key" data-key="5">5</div>
+            <div class="key" data-key="6">6</div>
+            <div class="key" data-key="1">1</div>
+            <div class="key" data-key="2">2</div>
+            <div class="key" data-key="3">3</div>
+            <div class="key" data-key="SIGN">+/-</div>
+            <div class="key" data-key="0">0</div>
+            <div class="key" data-key=".">.</div>
+          </div>
+          <div id="operatorKeys" class="keys-area-right">
+            <div id="keyDivide" class="key" data-key="DIVIDE">/</div>
+            <div id="keyMultiply" class="key" data-key="MULTIPLY">*</div>
+            <div id="keySubtract" class="key" data-key="SUBTRACT">-</div>
+            <div id="keyAdd" class="key" data-key="ADD">+</div>
+            <div id="keyEqual" class="key" data-key="EQUAL">=</div>
+          </div>
       </div>
     </div>
 
