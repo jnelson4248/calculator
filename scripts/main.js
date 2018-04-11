@@ -1,16 +1,13 @@
 
 
-const operation = {
-                    firstNumber: null,
-                    secondNumber: null,
-                    operator: null,
-                    curNumber: 0,
-                    curNumString: "",
-                    curNumPositive: true,
-                    decimalPosition: null
-                  }
+let numString = "0";
+let numDisplay = "";
+let numFirst = null;
+let numSecond = null;
+let numSolution = null;
 
 const display = document.getElementById('display');
+updateDisplay(numString);
 
 const keyReset = document.getElementById('keyReset');
 keyReset.addEventListener('click', resetCalculator, false);
@@ -19,22 +16,239 @@ const keyClear = document.getElementById('keyClear');
 keyClear.addEventListener('click', clearDisplay, false);
 
 const keyDivide = document.getElementById('keyDivide');
-keyDivide.addEventListener('click', nextOperation("DIVIDE"), false);
+keyDivide.addEventListener('click', operation("DIVIDE"), false);
 
 const keyMultiply = document.getElementById('keyMultiply');
-keyMultiply.addEventListener('click', nextOperation("MULTIPLY"), false);
+keyMultiply.addEventListener('click', operation("MULTIPLY"), false);
 
 const keySubtract = document.getElementById('keySubtract');
-keySubtract.addEventListener('click', nextOperation("SUBTRACT"), false);
+keySubtract.addEventListener('click', operation("SUBTRACT"), false);
 
 const keyAdd = document.getElementById('keyAdd');
-keyAdd.addEventListener('click', nextOperation("ADD"), false);
+keyAdd.addEventListener('click', operation("ADD"), false);
 
 const keyEqual = document.getElementById('keyEqual');
-keyEqual.addEventListener('click', solveEquation, false);
+keyEqual.addEventListener('click', solve, false);
 
 const containerKeys = document.getElementById('numberKeys');
 containerKeys.addEventListener('click', addCharacter, false);
+
+
+function addCharacter(e) {
+  if (e.target !== e.currentTarget) {
+    console.log("inside addCharacter");
+    console.log("character clicked = " + e.target.dataset.key);
+    updateNumString(e.target.dataset.key);
+    // console.log("after updateNumString()");
+    setNumDisplay();
+    updateDisplay(numDisplay);
+    // console.log("after updateDisplay()");
+    e.stopPropagation();
+    // console.log("end of addCharacter()");
+  }
+}
+
+function numToString(number) {
+
+}
+
+function stringToNumber(string) {
+
+}
+
+function solve() {
+
+}
+
+function operation(operation) {
+  // console.log("entered function operation");
+  // console.log("operation received: " + testString);
+  // console.log("end of operation");
+  switch (operation) {
+      case "ADD":
+
+        break;
+      case "SUBTRACT":
+
+        break;
+      case "MULTIPLY":
+
+        break;
+      case "DIVIDE":
+
+        break;
+      default:
+        alert("No correct operation type was passed");
+  }
+
+
+
+}
+
+function add() {
+
+}
+
+function subtract() {
+
+}
+
+function multiply() {
+
+}
+
+function divide() {
+
+}
+
+
+function updateNumString(newContent) {
+  console.log("entered updateNumString - numString =        " + numString);
+  console.log("entered updateNumString - numString length = " + numString.length);
+  switch (newContent) {
+    case "SIGN":
+      numStringChangeSign();
+      break;
+    case ".":
+      numStringAppendDecimal();
+      break;
+    default: // keys 0-9
+    if (numStringUnderMaxLength()) {
+      numStringAppendString(newContent);
+    }
+  }
+  console.log("end of updateNumString - numString =        " + numString);
+  console.log("end of updateNumString - numString length = " + numString.length);
+}
+
+function numStringChangeSign() {
+  console.log("entered ChangeSign: parseFloat(numString) = " + parseFloat(numString))
+  if (numString[0] == "-") {
+    numString = numString.slice(1);
+  } else if (parseFloat(numString) != 0) {
+    numString = "-" + numString;
+  }
+}
+
+function numStringAppendDecimal() {
+  if (!numString.includes(".")) {
+    numString += ".";
+  }
+}
+
+function numStringAppendString(newString) {
+  if (numString === "0") {
+    numString = newString;
+  } else {
+    numString += newString;
+  }
+}
+
+// returns true if under the maxLength. Does not count "." or "-" toward length
+function numStringUnderMaxLength() {
+  let maxLength = 10;
+  let strippedString = numString;
+  if (strippedString.includes(".")) {
+    strippedString = removeSubStringAll(strippedString, ".");
+  }
+  if (strippedString.includes("-")) {
+    strippedString = removeSubStringAll(strippedString, "-");
+  }
+  if (strippedString.length < maxLength) {
+    return true;
+  } else {
+    alert("Input length reached. I can't add any more digits :( ");
+    return false;
+  }
+}
+
+
+function updateDisplay(content) {
+  display.textContent = content;
+}
+
+// formats numString with commas for improved display
+function setNumDisplay() {
+  console.log("---------------------------------------");
+  console.log("Inside setNumDisplay");
+  let alteredNumber = numString;
+  console.log("Altered Number = " + alteredNumber);
+  let index = 0;
+  if (isNumStringNegative()) {
+    console.log("numString negative ");
+    alteredNumber = numString.slice(1);
+  }
+  console.log("after check negative, altered = " + alteredNumber);
+  if (alteredNumber.includes(".")) {
+    index = alteredNumber.indexOf(".");
+    console.log("decimal exists")
+  } else {
+    index = alteredNumber.length;
+    console.log("decimal: none");
+  }
+  console.log("index = " + index);
+  let count = 1;
+  while (index > 3) {
+    console.log("Inside While loop - loop " + count);
+    index -= 3;
+    alteredNumber = insertStringAtPos(",", alteredNumber, index);
+    count ++;
+  }
+  if (isNumStringNegative()) {
+    alteredNumber = "-" + alteredNumber;
+  }
+  console.log("final alteredNumber = " + alteredNumber);
+  console.log("---------------------------------------");
+  numDisplay = alteredNumber;
+}
+
+function isNumStringNegative() {
+  return (numString[0] === "-") ? true : false;
+}
+
+function insertStringAtPos(subString, existingString, index) {
+  let partOne = existingString.slice(0, index) + subString;
+  let partTwo = existingString.slice(index);
+  return partOne + partTwo;
+}
+
+// removes all occurences of a substring and returns resulting string
+function removeSubStringAll(myString, subString) {
+  while (myString.includes(subString)){
+    let index = myString.indexOf(subString);
+    let partOne = myString.slice(0, index);
+    let partTwo = myString.slice(index + subString.length);
+    myString = partOne + partTwo;
+  }
+  return myString
+}
+
+function resetCalculator() {
+
+}
+
+function clearDisplay() {
+  numString = "0";
+  setNumDisplay();
+  updateDisplay(numDisplay);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  OLD VERSION OF CODE
+
+/*
 
 function resetCalculator() {
   operation.firstNumber = null;
@@ -161,8 +375,7 @@ function isNonZeroString(content){
     return (parseFloat(content) != 0) ? true : false;
 }
 
-// initialize calculator at screen load
-resetCalculator();
+*/
 
 ///////////  TEMPORARY CODE AREA   ////////////////////////
 /*
