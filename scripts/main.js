@@ -8,6 +8,7 @@ let numSolution = [];
 let numSolutionNonNegative = true;
 let nextOperation = null;
 let useSolutionNextOperation = false;
+let updateOperationOnly = false;
 
 const display = document.getElementById('display');
 
@@ -118,18 +119,21 @@ function curNumberAppendString(newString) {
 function setNextOperation(operation) {
   // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
   // console.log("entered setNextOperation");
-  
-  if (nextOperation != null) {
-    // If use operation key before pressing =
-    // console.log("nextOperation NOT null");
-    solve();
+  // allow changing of operation type before solving.
+  if (!updateOperationOnly) {
+    if (nextOperation != null) {
+      // If use operation key before pressing =
+      // console.log("nextOperation NOT null");
+      solve();
+    }
+    numFirst = curNumberToNumber();
+    curNumber = ["0"];
+    curNumberNonNegative = true;
+    // console.log("numFirst = " + numFirst);
+    updateOperationOnly = true;  // reset at end of solve()
   }
   nextOperation = operation;
   // console.log("nextOperation = " + nextOperation);
-  numFirst = curNumberToNumber();
-  curNumber = ["0"];
-  curNumberNonNegative = true;
-  // console.log("numFirst = " + numFirst);
   // console.log("end of setNextOperation");
   // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
 }
@@ -184,6 +188,7 @@ function solve() {
     nextOperation = null;
     // set useSolution.. to "true" - resets to "false" if user clicks "." or "1-9"
     useSolutionNextOperation = true;
+    updateOperationOnly = false;
   }
 }
 
@@ -274,6 +279,7 @@ function resetGlobalVariables() {
   numSolutionNonNegative = true;
   nextOperation = null;
   useSolutionNextOperation = false;
+  updateOperationOnly = false;
 }
 
 
