@@ -1,13 +1,13 @@
 
-
 let curNumber = ["0"];
-let curNumberPositive = true;
-let numDisplay = "";
+let curNumberNonNegative = true;
+let numDisplay = "0";
 let numFirst = null;
 let numSecond = null;
 let numSolution = [];
-let numSolutionPositive = true;
+let numSolutionNonNegative = true;
 let nextOperation = null;
+let useSolutionNextOperation = false;
 
 const display = document.getElementById('display');
 
@@ -44,7 +44,6 @@ function addCharacter(e) {
     numSecond = null;
     updateCurNumber(e.target.dataset.key);
     // console.log("after updateCurNumber()");
-    setNumDisplay(curNumber, curNumberPositive);
     updateDisplay(numDisplay);
     // console.log("after updateDisplay()");
     e.stopPropagation();
@@ -52,8 +51,93 @@ function addCharacter(e) {
   }
 }
 
+// clicking "." or "0-9" resets the curNumber to ["0"] to exit the situation
+// where you are continuing operations from a previous solution.  "changeSign"
+// is allowed on a previous solution, when continuing on with it, but using
+// "changeSign" on a solution, followed by either "." or "0-9" will still
+// reset curNumber.
+function updateCurNumber(newContent) {
+  console.log("entered updateCurNumber():")
+  console.log(curNumber);
+  switch (newContent) {
+    case "SIGN":
+      curNumberChangeSign();
+      break;
+    case ".":
+      resetCurNumberIfNotUsingSolution();
+      curNumberAppendDecimal();
+      break;
+    default: // keys 0-9
+      resetCurNumberIfNotUsingSolution();
+      if (curNumberUnderMaxLength()) {
+      curNumberAppendString(newContent);
+    }
+  }
+  console.log("end of updateCurNumber() - curNumber:");
+  console.log(curNumber);
+}
+
+function curNumberChangeSign() {
+  if (curNumberToNumber() != 0) {
+    curNumberNonNegative = (curNumberNonNegative) ? false : true;
+    setNumDisplay(curNumber, curNumberNonNegative);
+  }
+}
+
+function curNumberAppendDecimal() {
+  if (!curNumber.includes(".")) {
+    curNumber.push(".");
+    setNumDisplay(curNumber, curNumberNonNegative);
+  }
+}
+
+function curNumberAppendString(newString) {
+  if ((curNumber.length == 1) && (curNumber[0] == "0")) {
+    console.log("______________________________________");
+    console.log("curNumberAppendString():");
+    console.log("curNumber: ");
+    console.log(curNumber);
+
+
+    curNumber.pop();
+    console.log("curNumber after pop: ");
+    console.log(curNumber);
+    curNumber.push(newString);
+    console.log("curNumber after push: ");
+    console.log(curNumber);
+  } else {
+    curNumber.push(newString);
+    console.log("else branch - curNumber after push: ");
+    console.log(curNumber);
+    console.log("end appendstring()");
+  }
+  setNumDisplay(curNumber, curNumberNonNegative);
+  console.log("______________________________________");
+}
+
+function setNextOperation(operation) {
+  // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+  // console.log("entered setNextOperation");
+  
+  if (nextOperation != null) {
+    // If use operation key before pressing =
+    // console.log("nextOperation NOT null");
+    solve();
+  }
+  nextOperation = operation;
+  // console.log("nextOperation = " + nextOperation);
+  numFirst = curNumberToNumber();
+  curNumber = ["0"];
+  curNumberNonNegative = true;
+  // console.log("numFirst = " + numFirst);
+  // console.log("end of setNextOperation");
+  // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+}
+
 function solve() {
   let solution = 0;
+  let divisionError = false;
+  let solutionFound = true;
   numSecond = curNumberToNumber();
   switch (nextOperation) {
     case "ADD":
@@ -63,115 +147,77 @@ function solve() {
       solution = numFirst - numSecond;
       break;
     case "MULTIPLY":
+      console.log("Mutliply: 1st = " + numFirst);
+      console.log("Mutliply: 2nd = " + numSecond);
       solution = numFirst * numSecond;
       break;
     case "DIVIDE":
-      solution = numFirst / numSecond;
+      if (numSecond == 0) {
+        divisionError = true;
+      } else {
+        solution = numFirst / numSecond;
+      }
       break;
     default:
-    alert("No correct operation type was passed");
+      // do nothing if "=" clicked before clicking "=-*\"
+      solutionFound = false;
   }
   // cover both cases to ensure previous solutions are completely reset
-  if (solution > 0) {
-    numSolutionPositive = true;
+  if (solution >= 0) {
+    numSolutionNonNegative = true;
   } else {
-  numSolutionPositive = false;
-  solution *= -1;    //numSolution is stored as a positive number
+    numSolutionNonNegative = false;
+    solution *= -1;    //numSolution is stored as a positive number
   }
-  numSolution = solution.toString().split("");
-  setNumDisplay(numSolution, numSolutionPositive);
-  updateDisplay(numDisplay);
-
-  curNumber = ["0"];
-  curNumberPositive = true;
-  numFirst = null;
-  nextOperation = null;
-
-}
-
-function setNextOperation(operation) {
-  console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
-  console.log("entered setNextOperation");
-  if (nextOperation != null) {
-    // If use operation key before pressing =
-    console.log("nextOperation NOT null");
-    solve();
-  }
-  if ((numSecond != null) || (nextOperation != null)) {
-  // If press operator directly after =, use solution as first number
+  // Catch "Divide by 0" error
+  if (divisionError == true) {
+    resetGlobalVariables();
+    updateDisplay("ERROR - DIVIDE BY 0");
+  } else if (solutionFound == true) {
+    numSolution = solution.toString().split("");
+    setNumDisplay(numSolution, numSolutionNonNegative);
+    updateDisplay(numDisplay);
     curNumber = numSolution;
-    curNumberPositive = numSolutionPositive;
-  }
-  nextOperation = operation;
-  console.log("nextOperation = " + nextOperation);
-  numFirst = curNumberToNumber();
-  console.log("numFirst = " + numFirst);
-  curNumber = ["0"];
-  curNumberPositive = true;
-  console.log("end of setNextOperation");
-  console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
-}
-
-
-// changes array curNumber into its numeric equivalent.
-// Removes trailing zeros, if after a decimal
-function curNumberToNumber() {
-  let curNumberString = curNumber.join("");
-  let number = parseFloat(curNumberString);
-  if (!curNumberPositive) {
-      number *= -1;
-  }
-  return number;
-}
-
-
-function updateCurNumber(newContent) {
-  console.log("entered updateCurNumber:")
-  console.log(curNumber);
-  switch (newContent) {
-    case "SIGN":
-      curNumberChangeSign();
-      break;
-    case ".":
-      curNumberAppendDecimal();
-      break;
-    default: // keys 0-9
-    if (curNumberUnderMaxLength()) {
-      curNumberAppendString(newContent);
-    }
-  }
-  console.log("end of updateCurNumber - curNumber:");
-  console.log(curNumber);
-}
-
-function curNumberChangeSign() {
-  if (curNumberToNumber() != 0) {
-    curNumberPositive = (curNumberPositive) ? false : true;
+    curNumberNonNegative = numSolutionNonNegative;
+    numFirst = null;
+    numSecond = null;
+    nextOperation = null;
+    // set useSolution.. to "true" - resets to "false" if user clicks "." or "1-9"
+    useSolutionNextOperation = true;
   }
 }
 
-function curNumberAppendDecimal() {
-  if (!curNumber.includes(".")) {
-    curNumber.push(".");
+// formats a number array (eg: curNumber) with commas for improved display
+function setNumDisplay(numberArray, numberNonNegative) {
+  console.log("---------------------------------------");
+  console.log("Inside setNumDisplay");
+  let alteredNumber = numberArray.slice(0);
+  console.log("strippedCurNumber:");
+  console.log(alteredNumber);
+  let index = alteredNumber.indexOf(".");
+  if (index < 0) {
+    index = alteredNumber.length;
+    console.log("decimal: none");
   }
+  console.log("index = " + index);
+  let count = 1;
+  while (index > 3) {
+    console.log("Inside While loop: on loop " + count);
+    index -= 3;
+    alteredNumber.splice(index, 0, ",");
+    count ++;
+  }
+  if (!numberNonNegative) {
+    alteredNumber.unshift("-");
+  }
+  console.log("final alteredNumber:");
+  console.log(alteredNumber);
+  console.log("---------------------------------------");
+  numDisplay = alteredNumber.join("");
 }
 
-function curNumberAppendString(newString) {
-  if ((curNumber.length == 1) && (curNumber[0] == "0")) {
-    console.log("______________________________________");
-    console.log("curNumberAppendString:");
-    console.log("curNumber: " + curNumber);
-
-    curNumber.pop();
-    console.log("ater pop: " + curNumber);
-    curNumber.push(newString);
-    console.log("after push: " + curNumber);
-  } else {
-    curNumber.push(newString);
-    console.log("else: after push: " + curNumber);
-    console.log("end appendstring");
-  }
-  console.log("______________________________________");
+function updateDisplay(content) {
+  display.textContent = content;
 }
 
 // returns true if under the maxLength. Does not count "." toward length
@@ -186,62 +232,48 @@ function curNumberUnderMaxLength() {
   }
 }
 
-function updateDisplay(content) {
-  display.textContent = content;
+function resetCurNumberIfNotUsingSolution() {
+  if (useSolutionNextOperation == true){
+    curNumber = ["0"];
+    curNumberNonNegative = true;
+    useSolutionNextOperation = false;
+  }
 }
 
-// formats a number array (eg: curNumber) with commas for improved display
-function setNumDisplay(numberArray, numberPositive) {
-  console.log("---------------------------------------");
-  console.log("Inside setNumDisplay");
-  let alteredNumber = numberArray.slice(0);
-  console.log("strippedCurNumber:");
-  console.log(alteredNumber);
-  let index = alteredNumber.indexOf(".");
-  if (index < 0) {
-    index = alteredNumber.length;
-    console.log("decimal: none");
+// changes array curNumber into its numeric equivalent.
+// Removes trailing zeros, if after a decimal
+function curNumberToNumber() {
+  let curNumberString = curNumber.join("");
+  let number = parseFloat(curNumberString);
+  if (!curNumberNonNegative) {
+      number *= -1;
   }
-  console.log("index = " + index);
-  let count = 1;
-  while (index > 3) {
-    console.log("Inside While loop - loop " + count);
-    index -= 3;
-    alteredNumber.splice(index, 0, ",");
-    count ++;
-  }
-  if (!numberPositive) {
-    alteredNumber.unshift("-");
-  }
-  console.log("final alteredNumber:");
-  console.log(alteredNumber);
-  console.log("---------------------------------------");
-  numDisplay = alteredNumber.join("");
+  return number;
 }
-
 
 function resetCalculator() {
   resetGlobalVariables();
-  setNumDisplay(curNumber, curNumberPositive);
+  setNumDisplay(curNumber, curNumberNonNegative);
   updateDisplay(numDisplay);
 }
 
 function clearDisplay() {
   curNumber = ["0"];
-  curNumberPositive = true;
-  setNumDisplay(curNumber, curNumberPositive);
+  curNumberNonNegative = true;
+  setNumDisplay(curNumber, curNumberNonNegative);
   updateDisplay(numDisplay);
 }
 
 function resetGlobalVariables() {
-  let curNumber = ["0"];
-  let curNumberPositive = true;
-  let numDisplay = "";
-  let numFirst = null;
-  let numSecond = null;
-  let numSolution = [];
-  let numSolutionPositive = true;
-  let nextOperation = null;
+  curNumber = ["0"];
+  curNumberNonNegative = true;
+  numDisplay = "0";
+  numFirst = null;
+  numSecond = null;
+  numSolution = [];
+  numSolutionNonNegative = true;
+  nextOperation = null;
+  useSolutionNextOperation = false;
 }
 
 

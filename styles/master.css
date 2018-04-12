@@ -44,7 +44,8 @@ html, body {
 }
 
 .display {
-  font-size: 3.1rem;
+  /* font-size: 3.1rem; */
+  font-size: 1.5rem;  /* to test until solution display formatting is set*/
   height: 5rem;
   background-color: silver;
   border: 0.25rem solid dimgrey;
