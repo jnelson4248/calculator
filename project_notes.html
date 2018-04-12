@@ -14,6 +14,16 @@ why are functions like this automatically running? preventDevault or Propagation
   keyDivide.addEventListener('click', operation("DIVIDE")
 
 
+changeSign doesn't work if countinuing form previous answer (eith +/-* or from =)
+
+format display of numbersolution :
+- restrict number of digits.
+- force to e notation?  how does this affect ny setDisplay()
+-
+
+
+
+
 splice(pos, n) ...remove n items starting at position pos
 unshift(x) add to front of arrays
 shift() remove first item in arrays
@@ -22,11 +32,6 @@ indexOf (or find()) finds 1st index of 'x' is -1 if not found
 join() combines all items into a string
 some() - returns true if at least one element sataifes the testing function
 
-
-
-
-
-numStringUnderMaxLength() : check is being made before actually adding the current digit, so here if I'm trying to add the 10th digit, it's only analying the "previous" numString that has 9 digits, instead of checking the length of the numString I'm trying to create NOW that is 10 digits.....so, It' allows me to do 10 digits even though says < MaxLength (=10)
 
 //////////////  BEAUTIFICATIN / SPACING  /////////////////////////////////
 

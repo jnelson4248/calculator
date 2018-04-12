@@ -5,7 +5,9 @@ let curNumberPositive = true;
 let numDisplay = "";
 let numFirst = null;
 let numSecond = null;
-let numSolution = null;
+let numSolution = [];
+let numSolutionPositive = true;
+let nextOperation = null;
 
 const display = document.getElementById('display');
 
@@ -16,16 +18,16 @@ const keyClear = document.getElementById('keyClear');
 keyClear.addEventListener('click', clearDisplay, false);
 
 const keyDivide = document.getElementById('keyDivide');
-keyDivide.addEventListener('click', operation("DIVIDE"), false);
+keyDivide.addEventListener('click', function() { setNextOperation("DIVIDE") }, false);
 
 const keyMultiply = document.getElementById('keyMultiply');
-keyMultiply.addEventListener('click', operation("MULTIPLY"), false);
+keyMultiply.addEventListener('click', function() { setNextOperation("MULTIPLY") }, false);
 
 const keySubtract = document.getElementById('keySubtract');
-keySubtract.addEventListener('click', operation("SUBTRACT"), false);
+keySubtract.addEventListener('click', function() { setNextOperation("SUBTRACT") }, false);
 
 const keyAdd = document.getElementById('keyAdd');
-keyAdd.addEventListener('click', operation("ADD"), false);
+keyAdd.addEventListener('click', function() { setNextOperation("ADD") }, false);
 
 const keyEqual = document.getElementById('keyEqual');
 keyEqual.addEventListener('click', solve, false);
@@ -38,9 +40,11 @@ function addCharacter(e) {
   if (e.target !== e.currentTarget) {
     console.log("inside addCharacter");
     console.log("character clicked = " + e.target.dataset.key);
+    //  avoid case in setNextOperation(): using previous solution as numFirst
+    numSecond = null;
     updateCurNumber(e.target.dataset.key);
     // console.log("after updateCurNumber()");
-    setNumDisplay();
+    setNumDisplay(curNumber, curNumberPositive);
     updateDisplay(numDisplay);
     // console.log("after updateDisplay()");
     e.stopPropagation();
@@ -48,57 +52,76 @@ function addCharacter(e) {
   }
 }
 
-function numToString(number) {
-
-}
-
-function stringToNumber(string) {
-
-}
-
 function solve() {
-
-}
-
-function operation(operation) {
-  // console.log("entered function operation");
-  // console.log("operation received: " + testString);
-  // console.log("end of operation");
-  switch (operation) {
-      case "ADD":
-
-        break;
-      case "SUBTRACT":
-
-        break;
-      case "MULTIPLY":
-
-        break;
-      case "DIVIDE":
-
-        break;
-      default:
-        alert("No correct operation type was passed");
+  let solution = 0;
+  numSecond = curNumberToNumber();
+  switch (nextOperation) {
+    case "ADD":
+      solution = numFirst + numSecond;
+      break;
+    case "SUBTRACT":
+      solution = numFirst - numSecond;
+      break;
+    case "MULTIPLY":
+      solution = numFirst * numSecond;
+      break;
+    case "DIVIDE":
+      solution = numFirst / numSecond;
+      break;
+    default:
+    alert("No correct operation type was passed");
   }
+  // cover both cases to ensure previous solutions are completely reset
+  if (solution > 0) {
+    numSolutionPositive = true;
+  } else {
+  numSolutionPositive = false;
+  solution *= -1;    //numSolution is stored as a positive number
+  }
+  numSolution = solution.toString().split("");
+  setNumDisplay(numSolution, numSolutionPositive);
+  updateDisplay(numDisplay);
 
-
+  curNumber = ["0"];
+  curNumberPositive = true;
+  numFirst = null;
+  nextOperation = null;
 
 }
 
-function add() {
-
+function setNextOperation(operation) {
+  console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+  console.log("entered setNextOperation");
+  if (nextOperation != null) {
+    // If use operation key before pressing =
+    console.log("nextOperation NOT null");
+    solve();
+  }
+  if ((numSecond != null) || (nextOperation != null)) {
+  // If press operator directly after =, use solution as first number
+    curNumber = numSolution;
+    curNumberPositive = numSolutionPositive;
+  }
+  nextOperation = operation;
+  console.log("nextOperation = " + nextOperation);
+  numFirst = curNumberToNumber();
+  console.log("numFirst = " + numFirst);
+  curNumber = ["0"];
+  curNumberPositive = true;
+  console.log("end of setNextOperation");
+  console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
 }
 
-function subtract() {
 
-}
-
-function multiply() {
-
-}
-
-function divide() {
-
+// changes array curNumber into its numeric equivalent.
+// Removes trailing zeros, if after a decimal
+function curNumberToNumber() {
+  let curNumberString = curNumber.join("");
+  let number = parseFloat(curNumberString);
+  if (!curNumberPositive) {
+      number *= -1;
+  }
+  return number;
 }
 
 
@@ -122,7 +145,9 @@ function updateCurNumber(newContent) {
 }
 
 function curNumberChangeSign() {
-  curNumberPositive = (curNumberPositive) ? false : true;
+  if (curNumberToNumber() != 0) {
+    curNumberPositive = (curNumberPositive) ? false : true;
+  }
 }
 
 function curNumberAppendDecimal() {
@@ -133,6 +158,7 @@ function curNumberAppendDecimal() {
 
 function curNumberAppendString(newString) {
   if ((curNumber.length == 1) && (curNumber[0] == "0")) {
+    console.log("______________________________________");
     console.log("curNumberAppendString:");
     console.log("curNumber: " + curNumber);
 
@@ -145,6 +171,7 @@ function curNumberAppendString(newString) {
     console.log("else: after push: " + curNumber);
     console.log("end appendstring");
   }
+  console.log("______________________________________");
 }
 
 // returns true if under the maxLength. Does not count "." toward length
@@ -163,11 +190,11 @@ function updateDisplay(content) {
   display.textContent = content;
 }
 
-// formats curNumber with commas for improved display
-function setNumDisplay() {
+// formats a number array (eg: curNumber) with commas for improved display
+function setNumDisplay(numberArray, numberPositive) {
   console.log("---------------------------------------");
   console.log("Inside setNumDisplay");
-  let alteredNumber = curNumber.slice(0);
+  let alteredNumber = numberArray.slice(0);
   console.log("strippedCurNumber:");
   console.log(alteredNumber);
   let index = alteredNumber.indexOf(".");
@@ -183,7 +210,7 @@ function setNumDisplay() {
     alteredNumber.splice(index, 0, ",");
     count ++;
   }
-  if (!curNumberPositive) {
+  if (!numberPositive) {
     alteredNumber.unshift("-");
   }
   console.log("final alteredNumber:");
@@ -194,27 +221,37 @@ function setNumDisplay() {
 
 
 function resetCalculator() {
-  curNumber = ["0"];
-  curNumberPositive = true;
-  numDisplay = "";
-  numFirst = null;
-  numSecond = null;
-  numSolution = null;
-  setNumDisplay();
+  resetGlobalVariables();
+  setNumDisplay(curNumber, curNumberPositive);
   updateDisplay(numDisplay);
 }
 
 function clearDisplay() {
   curNumber = ["0"];
-  setNumDisplay();
+  curNumberPositive = true;
+  setNumDisplay(curNumber, curNumberPositive);
   updateDisplay(numDisplay);
+}
+
+function resetGlobalVariables() {
+  let curNumber = ["0"];
+  let curNumberPositive = true;
+  let numDisplay = "";
+  let numFirst = null;
+  let numSecond = null;
+  let numSolution = [];
+  let numSolutionPositive = true;
+  let nextOperation = null;
 }
 
 
 
 
+// FUNCTIONS NOT YET BEING USED
 
-
+function removeLastDigit() {
+  curNumber.pop();
+}
 
 function insertStringAtPos(subString, existingString, index) {
   let partOne = existingString.slice(0, index) + subString;
