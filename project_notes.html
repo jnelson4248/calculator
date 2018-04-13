@@ -9,12 +9,17 @@
     <!--___NOTES____ideas to implement_____________________________
 
 /////////////    FUNCTIONALITY ISSUES - IMPORTANT  ///////////////////////
+allocate() - in key listener.  Event is passed to allocate, but I don't think it gets passed out of allocate into the next called function....and it's called differently from the click listeners....eg: addCharacter vs addCharacter(e)
+
 
 highlight operation keys when pressed
 
 run an intitialize function at load on to generate the default numbers, like display number, etc...
 
+where do I need preventDevault() and stopPrpagation() ???  everywhere? keydown??
 
+listeners still need "false" after ('click', function, false)
+- need it on: window.addEventListener('keydown', allocateKeyCode); ?? 
 
 
 //////////////  BEAUTIFICATIN / SPACING  /////////////////////////////////

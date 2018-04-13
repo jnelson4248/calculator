@@ -46,13 +46,52 @@ const containerKeys = document.getElementById('numberKeys');
 containerKeys.addEventListener('click', addCharacter, false);
 
 
+
+window.addEventListener('keydown', allocateKeyCode);
+
+function allocateKeyCode(e) {
+  console.log("Key Pressed: keyCode = " + e.keyCode);
+  const element = document.querySelector(`.key[data-key-code="${e.keyCode}"]`);
+  if (!element) return;
+
+  let keyName = e.target.dataset.keyName;
+  let numPadKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", "SIGN"];
+  let operatorKeys = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
+  if (numPadKeys.includes(keyName)) {
+    addCharacter;
+    return;
+  }
+  if (numPadKeys.includes(keyName)) {
+    setNextOperation;
+    return;
+  }
+
+  switch (keyName) {
+    case "RESET":
+      resetCalculator;
+      break;
+    case "CLEAR":
+      clearDisplay;
+      break;
+    case "DELETE":
+      removeLastDigit;
+      break;
+    case "EQUAL":
+      solve;
+      break;
+  }
+}
+
+
+
+
 function addCharacter(e) {
   if (e.target !== e.currentTarget) {
     console.log("inside addCharacter");
-    console.log("character clicked = " + e.target.dataset.key);
+    console.log("character clicked = " + e.target.dataset.keyName);
     //  avoid case in setNextOperation(): using previous solution as numFirst
     numSecond = null;
-    updateCurNumber(e.target.dataset.key);
+    updateCurNumber(e.target.dataset.keyName);
     console.log("after updateCurNumber()");
     updateDisplayAll(numDisplay);
     console.log("after updateDisplayAll()");
@@ -129,7 +168,7 @@ function curNumberAppendString(newString) {
 }
 
 function setNextOperation(e) {
-  let operation = e.target.dataset.key;
+  let operation = e.target.dataset.keyName;
   console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
   console.log("entered setNextOperation");
   // allow changing of operation type before solving.
