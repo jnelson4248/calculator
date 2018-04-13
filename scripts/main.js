@@ -28,16 +28,16 @@ const keyDelete = document.getElementById('keyDelete');
 keyDelete.addEventListener('click', removeLastDigit, false);
 
 const keyDivide = document.getElementById('keyDivide');
-keyDivide.addEventListener('click', () => setNextOperation("DIVIDE"), false);
+keyDivide.addEventListener('click', setNextOperation, false);
 
 const keyMultiply = document.getElementById('keyMultiply');
-keyMultiply.addEventListener('click', () => setNextOperation("MULTIPLY"), false);
+keyMultiply.addEventListener('click', setNextOperation, false);
 
 const keySubtract = document.getElementById('keySubtract');
-keySubtract.addEventListener('click', () => setNextOperation("SUBTRACT"), false);
+keySubtract.addEventListener('click', setNextOperation, false);
 
 const keyAdd = document.getElementById('keyAdd');
-keyAdd.addEventListener('click', () => setNextOperation("ADD"), false);
+keyAdd.addEventListener('click', setNextOperation, false);
 
 const keyEqual = document.getElementById('keyEqual');
 keyEqual.addEventListener('click', solve, false);
@@ -128,7 +128,8 @@ function curNumberAppendString(newString) {
   console.log("______________________________________");
 }
 
-function setNextOperation(operation) {
+function setNextOperation(e) {
+  let operation = e.target.dataset.key;
   console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
   console.log("entered setNextOperation");
   // allow changing of operation type before solving.

@@ -9,22 +9,8 @@
     <!--___NOTES____ideas to implement_____________________________
 
 /////////////    FUNCTIONALITY ISSUES - IMPORTANT  ///////////////////////
-Add "back" button to remove last digits
-
-change "clear" to "clear entry?"
 
 highlight operation keys when pressed
-
-add two small stacked display windows to right of display.
-- one shows an active status of "+-*/" and the other show active status of "="
-  (ie: shows when operation is selected, or when showing a total from "=")
-- link textContent toggle funciton and code to add or remove as necessary.
-
-
-format display of numbersolution :
-- restrict number of digits.
-- force to e notation?  how does this affect ny setDisplay()
--
 
 run an intitialize function at load on to generate the default numbers, like display number, etc...
 
@@ -45,6 +31,12 @@ change color of keys
 prevent highlighting and cursor change (to select text cursor) when hovering over the keys...ie: always show the arrow pointer over the keys
 ////////////  CODE CLEANING UP THINGS ////////////////////////////////////
 
+
+///////////   THINGS CHANGED_ SINCE LAST COMMIT  //////////////////////////
+
+Main container not text-selectable with mouse.
+
+Simplified listener function calls to setNextOperation(), by removing the paramater and using the event to get the dataset "key"
 
 
 
