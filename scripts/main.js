@@ -10,13 +10,16 @@ let nextOperation = null;
 let useSolutionNextOperation = false;
 let updateOperationOnly = false;
 
-const display = document.getElementById('display');
+const displayMain = document.getElementById('displayMain');
 
 const keyReset = document.getElementById('keyReset');
 keyReset.addEventListener('click', resetCalculator, false);
 
 const keyClear = document.getElementById('keyClear');
 keyClear.addEventListener('click', clearDisplay, false);
+
+const keyDelete = document.getElementById('keyDelete');
+keyDelete.addEventListener('click', removeLastDigit, false);
 
 const keyDivide = document.getElementById('keyDivide');
 keyDivide.addEventListener('click', function() { setNextOperation("DIVIDE") }, false);
@@ -52,10 +55,10 @@ function addCharacter(e) {
   }
 }
 
-// clicking "." or "0-9" resets the curNumber to ["0"] to exit the situation
+// clicking (.) or (0-9) resets the curNumber to ["0"] to exit the situation
 // where you are continuing operations from a previous solution.  "changeSign"
 // is allowed on a previous solution, when continuing on with it, but using
-// "changeSign" on a solution, followed by either "." or "0-9" will still
+// "changeSign" on a solution, followed by either (.) or (0-9) will still
 // reset curNumber.
 function updateCurNumber(newContent) {
   console.log("entered updateCurNumber():")
@@ -163,7 +166,7 @@ function solve() {
       }
       break;
     default:
-      // do nothing if "=" clicked before clicking "=-*\"
+      // do nothing if (=) clicked before clicking (=-*/)
       solutionFound = false;
   }
   // cover both cases to ensure previous solutions are completely reset
@@ -186,7 +189,7 @@ function solve() {
     numFirst = null;
     numSecond = null;
     nextOperation = null;
-    // set useSolution.. to "true" - resets to "false" if user clicks "." or "1-9"
+    // set useSolution.. to "true" - resets to "false" if user clicks (=) or (0-9)
     useSolutionNextOperation = true;
     updateOperationOnly = false;
   }
@@ -222,12 +225,12 @@ function setNumDisplay(numberArray, numberNonNegative) {
 }
 
 function updateDisplay(content) {
-  display.textContent = content;
+  displayMain.textContent = content;
 }
 
-// returns true if under the maxLength. Does not count "." toward length
+// returns true if under the maxLength. Does not count (.) toward length
 function curNumberUnderMaxLength() {
-  let maxLength = 10;
+  let maxLength = 25;
   let strippedCurNumber = curNumber.filter(item => item !== ".");
   if (strippedCurNumber.length < maxLength) {
     return true;
@@ -254,6 +257,34 @@ function curNumberToNumber() {
       number *= -1;
   }
   return number;
+}
+
+// removes last digit from the number currently being entered.
+// Does not affect display after clicking an operator (+-*/) or (=)
+function removeLastDigit() {
+  console.log("useSolution = " + useSolutionNextOperation);
+  if ((!curNumber.length == 1) || (!curNumber[0] == "0")) {
+    // function in all cases except when curNumber is ["0"]
+    if (useSolutionNextOperation == false) {
+      // prevent functioning after an operator: (+-*/) or (=)
+      console.log("remove: curNubmer before pop:");
+      console.log(curNumber);
+      curNumber.pop();
+      console.log("remove: curNubmer after pop:");
+      console.log(curNumber);
+      console.log("curNumber length = " + curNumber.length);
+      if (curNumber.length == 0) {
+        console.log("reset curNumber in IF block");
+        curNumber = ["0"];
+        curNumberNonNegative = true;
+      } else if ((curNumber.length == 1) && (curNumber[0] == "0")) {
+        // if curNumber reduced to ["0"], ensure no negative
+        curNumberNonNegative = true;
+      }
+      setNumDisplay(curNumber, curNumberNonNegative);
+      updateDisplay(numDisplay);
+    }
+  }
 }
 
 function resetCalculator() {
@@ -287,9 +318,6 @@ function resetGlobalVariables() {
 
 // FUNCTIONS NOT YET BEING USED
 
-function removeLastDigit() {
-  curNumber.pop();
-}
 
 function insertStringAtPos(subString, existingString, index) {
   let partOne = existingString.slice(0, index) + subString;
@@ -306,4 +334,40 @@ function removeSubStringAll(myString, subString) {
     myString = partOne + partTwo;
   }
   return myString
+}
+
+function round(number, precision) {
+  var shift = function (number, precision, reverseShift) {
+    if (reverseShift) {
+      precision = -precision;
+    }
+    numArray = ("" + number).split("e");
+    return +(numArray[0] + "e" + (numArray[1] ? (+numArray[1] + precision) : precision));
+  };
+  return shift(Math.round(shift(number, precision, false)), precision, true);
+}
+
+function showCountOfDigits(number) {
+  let integerPortion = Math.trunc(a);
+  let integerPortionAbs = Math.abs(integerPortion);
+  let mantissaAbs = Math.abs(a - integerPortion);
+  console.log("Int = " + integerPortionAbs);
+  let intString = integerPortionAbs.toString();
+  console.log("Int String = " + intString);
+  let intStringLength = intString.length;
+  console.log("count Int = " + intStringLength);
+
+  console.log("++++++++");
+
+  console.log("Man = " + mantissaAbs);
+  let manString = mantissaAbs.toString();
+  console.log("Man String = " + manString);
+  let manStringLength = manString.length;
+  console.log("count Man = " + manStringLength);
+
+  console.log("========");
+
+  let totalCount = intStringLength + manStringLength;
+  console.log("total Length = " + totalCount.toString());
+
 }

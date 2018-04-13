@@ -22,7 +22,7 @@ html, body {
 
 * {
   box-sizing: border-box;
-  border: 1px solid hotpink;
+  /* border: 1px solid hotpink; */
 }
 
 .container-main {
@@ -40,23 +40,36 @@ html, body {
 
 .container-display {
   width: 30rem;
+  height: 4rem;
+  display: grid;
+  grid-template-columns: 11fr 1fr;
   margin: 0 auto 3rem;
 }
 
 .display {
   /* font-size: 3.1rem; */
-  font-size: 1.5rem;  /* to test until solution display formatting is set*/
-  height: 5rem;
   background-color: silver;
   border: 0.25rem solid dimgrey;
-  border-radius: 0.5rem;
-  padding-right: 1rem;
+  /* border-radius: 0.5rem; */
   display: flex;
-  flex-flow: nowrap row;
   align-items: center;
-  justify-content: flex-end;
 }
 
+.display-main {
+  font-size: 2rem;
+  border-right-width: 0;
+  flex-flow: nowrap row;
+  justify-content: flex-end;
+  /* padding-right: 0.5rem; */
+}
+
+.display-icons {
+  font-size: 1rem;
+  border-left-width: 0;
+  flex-flow: nowrap column;
+  justify-content: space-around;
+  padding: 0.6rem;
+}
 
 .container-keys {
   height: 30rem;
@@ -64,14 +77,14 @@ html, body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(5, 1fr);
-  grid-gap: 0.5rem;
+  grid-gap: 1rem;
   margin: auto;
 }
 
 .keys-area-top {
   grid-area: 1 / 1 / 2 / 4;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 3fr 2fr;
   grid-column-gap: 2rem;
   margin-bottom: 1.5rem;
 }
@@ -80,22 +93,33 @@ html, body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  grid-gap: 0.6rem;
+  grid-gap: 1.5rem;
 }
 .keys-area-right {
   grid-area: 1 / 4 / 6 / 5;
   display: grid;
-  grid-row-gap: 0.6rem;
-  margin-left: 1rem;
+  grid-row-gap: 1.5rem;
+  margin-left: 1.5rem;
 }
 
 .key {
-  font-size: 2em;
+  /* font-size: 1.5em; */
   background-color: lightgrey;
   border: 0.15rem solid dimgrey;
   border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
+.key-control {
+  font-size: 1.5em;
+}
+
+.key-numpad {
+  font-size: 2.5em;
+}
+
+.key-operator {
+  font-size: 2.5em;
 }
