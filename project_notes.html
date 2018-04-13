@@ -19,8 +19,23 @@ run an intitialize function at load on to generate the default numbers, like dis
 where do I need preventDevault() and stopPrpagation() ???  everywhere? keydown??
 
 listeners still need "false" after ('click', function, false)
-- need it on: window.addEventListener('keydown', allocateKeyCode); ?? 
+- need it on: window.addEventListener('keydown', allocateKeyCode); ??
 
+keycodes only register (keydown) once focus is on the current window...ie, click into the window of the calculator.
+
+how to add multiple keyCodes to an element (in data-key-code)
+  eg:  using data-key-name to call functions in JS
+        ::  keycode => element => element keyName => callback(keyName)
+
+  so want to be likethis:
+        ::  keycode 1  }
+                      .} => element => element keyName => callback(keyName)
+        ::  keycode 2  }
+
+  For example: number 1 can be in Numpad (97) or from top of QUERTY keyboard (49)
+
+
+  
 
 //////////////  BEAUTIFICATIN / SPACING  /////////////////////////////////
 

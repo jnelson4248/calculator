@@ -28,76 +28,86 @@ const keyDelete = document.getElementById('keyDelete');
 keyDelete.addEventListener('click', removeLastDigit, false);
 
 const keyDivide = document.getElementById('keyDivide');
-keyDivide.addEventListener('click', setNextOperation, false);
+// keyDivide.addEventListener('click', setNextOperation, false);
+keyDivide.addEventListener('click', () => { setNextOperation(keyDivide.dataset.keyName) }, false);
 
 const keyMultiply = document.getElementById('keyMultiply');
-keyMultiply.addEventListener('click', setNextOperation, false);
+// keyMultiply.addEventListener('click', setNextOperation, false);
+keyMultiply.addEventListener('click', () => { setNextOperation(keyMultiply.dataset.keyName) }, false);
 
 const keySubtract = document.getElementById('keySubtract');
-keySubtract.addEventListener('click', setNextOperation, false);
+// keySubtract.addEventListener('click', setNextOperation, false);
+keySubtract.addEventListener('click', () => { setNextOperation(keySubtract.dataset.keyName) }, false);
 
 const keyAdd = document.getElementById('keyAdd');
-keyAdd.addEventListener('click', setNextOperation, false);
+// keyAdd.addEventListener('click', setNextOperation, false);
+keyAdd.addEventListener('click', () => { setNextOperation(keyAdd.dataset.keyName) }, false);
 
 const keyEqual = document.getElementById('keyEqual');
-keyEqual.addEventListener('click', solve, false);
+// keyEqual.addEventListener('click', solve, false);
+keyEqual.addEventListener('click', () => { solve(keyEqual.dataset.keyName) }, false);
 
-const containerKeys = document.getElementById('numberKeys');
-containerKeys.addEventListener('click', addCharacter, false);
+// const containerKeys = document.getElementById('numberKeys');
+// containerKeys.addEventListener('click', addCharacter, false);
 
-
-
-window.addEventListener('keydown', allocateKeyCode);
-
-function allocateKeyCode(e) {
-  console.log("Key Pressed: keyCode = " + e.keyCode);
-  const element = document.querySelector(`.key[data-key-code="${e.keyCode}"]`);
-  if (!element) return;
-
-  let keyName = e.target.dataset.keyName;
-  let numPadKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", "SIGN"];
-  let operatorKeys = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
-  if (numPadKeys.includes(keyName)) {
-    addCharacter;
-    return;
-  }
-  if (numPadKeys.includes(keyName)) {
-    setNextOperation;
-    return;
-  }
-
-  switch (keyName) {
-    case "RESET":
-      resetCalculator;
-      break;
-    case "CLEAR":
-      clearDisplay;
-      break;
-    case "DELETE":
-      removeLastDigit;
-      break;
-    case "EQUAL":
-      solve;
-      break;
-  }
+const numPadKeyList = document.querySelectorAll('.key-numpad');
+for (let i = 0; i < numPadKeyList.length; i++) {
+  let key = numPadKeyList[i];
+  key.addEventListener('click', (event) => {
+    addCharacter(key.dataset.keyName);
+    event.stopPropagation();
+  });
 }
 
 
+window.addEventListener('keydown', runKeyCodeAction);
 
+function runKeyCodeAction(event) {
+  console.log("Key Pressed: keyCode = " + event.keyCode);
+  const element = document.querySelector(`.key[data-key-code="${event.keyCode}"]`);
+  console.log("element found is");
+  console.log(element);
 
-function addCharacter(e) {
-  if (e.target !== e.currentTarget) {
+  let operatorKeyNames = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
+  let elementKeyName = element.dataset.keyName;
+  classes = element.classList;
+  if (classes.contains('key-numpad')) {
+    addCharacter(elementKeyName);
+  } else if (operatorKeyNames.includes(elementKeyName)) {
+    setNextOperation(elementKeyName);
+  } else {
+    switch (elementKeyName) {
+      case "RESET":
+        resetCalculator();
+        break;
+      case "CLEAR":
+        clearDisplay();
+        break;
+      case "DELETE":
+        removeLastDigit();
+        break;
+      case "EQUAL":
+        solve();
+        break;
+    }
+  }
+}
+
+function addCharacter(keyName) {
+  // if (e.target !== e.currentTarget) {
     console.log("inside addCharacter");
-    console.log("character clicked = " + e.target.dataset.keyName);
+    // console.log("character clicked = " + e.target.dataset.keyName);
+    console.log("character clicked = " + keyName);
     //  avoid case in setNextOperation(): using previous solution as numFirst
     numSecond = null;
-    updateCurNumber(e.target.dataset.keyName);
+    // updateCurNumber(e.target.dataset.keyName);
+    updateCurNumber(keyName);
     console.log("after updateCurNumber()");
     updateDisplayAll(numDisplay);
     console.log("after updateDisplayAll()");
-    e.stopPropagation();
+    // e.stopPropagation();
     console.log("end of addCharacter()");
-  }
+  // }
 }
 
 // clicking (.) or (0-9) resets the curNumber to ["0"] to exit the situation
@@ -167,8 +177,7 @@ function curNumberAppendString(newString) {
   console.log("______________________________________");
 }
 
-function setNextOperation(e) {
-  let operation = e.target.dataset.keyName;
+function setNextOperation(operation) {
   console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
   console.log("entered setNextOperation");
   // allow changing of operation type before solving.
