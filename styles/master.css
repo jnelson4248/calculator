@@ -2,14 +2,6 @@
   *   Comment
   */
 
-#testButton {
-  height: 4rem;
-  width: 6rem;
-  display: block;
-  margin: 2rem auto 2rem;
-  border: 3px solid hotpink;
-}
-
 html, body {
   /* background-color: black; */
   font-family: Arial, Helvetica, sans-serif;
@@ -22,7 +14,7 @@ html, body {
 
 * {
   box-sizing: border-box;
-  /* border: 1px solid hotpink; */
+  border: 1px solid hotpink;
 }
 
 .container-main {
@@ -40,7 +32,7 @@ html, body {
 
 .container-display {
   width: 30rem;
-  height: 4rem;
+  height: 5rem;
   display: grid;
   grid-template-columns: 11fr 1fr;
   margin: 0 auto 3rem;
@@ -64,11 +56,11 @@ html, body {
 }
 
 .display-icons {
-  font-size: 1rem;
+  font-size: 1.5rem;
   border-left-width: 0;
   flex-flow: nowrap column;
   justify-content: space-around;
-  padding: 0.6rem;
+  padding: 0.3rem;
 }
 
 .container-keys {

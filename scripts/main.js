@@ -9,8 +9,12 @@ let numSolutionNonNegative = true;
 let nextOperation = null;
 let useSolutionNextOperation = false;
 let updateOperationOnly = false;
+let showIconOperation = false;
+let showIconEqual = false;
 
 const displayMain = document.getElementById('displayMain');
+const displayIconOperation = document.getElementById('displayIconOperation');
+const displayIconEqual = document.getElementById('displayIconEqual');
 
 const keyReset = document.getElementById('keyReset');
 keyReset.addEventListener('click', resetCalculator, false);
@@ -22,16 +26,16 @@ const keyDelete = document.getElementById('keyDelete');
 keyDelete.addEventListener('click', removeLastDigit, false);
 
 const keyDivide = document.getElementById('keyDivide');
-keyDivide.addEventListener('click', function() { setNextOperation("DIVIDE") }, false);
+keyDivide.addEventListener('click', () => setNextOperation("DIVIDE"), false);
 
 const keyMultiply = document.getElementById('keyMultiply');
-keyMultiply.addEventListener('click', function() { setNextOperation("MULTIPLY") }, false);
+keyMultiply.addEventListener('click', () => setNextOperation("MULTIPLY"), false);
 
 const keySubtract = document.getElementById('keySubtract');
-keySubtract.addEventListener('click', function() { setNextOperation("SUBTRACT") }, false);
+keySubtract.addEventListener('click', () => setNextOperation("SUBTRACT"), false);
 
 const keyAdd = document.getElementById('keyAdd');
-keyAdd.addEventListener('click', function() { setNextOperation("ADD") }, false);
+keyAdd.addEventListener('click', () => setNextOperation("ADD"), false);
 
 const keyEqual = document.getElementById('keyEqual');
 keyEqual.addEventListener('click', solve, false);
@@ -47,11 +51,11 @@ function addCharacter(e) {
     //  avoid case in setNextOperation(): using previous solution as numFirst
     numSecond = null;
     updateCurNumber(e.target.dataset.key);
-    // console.log("after updateCurNumber()");
-    updateDisplay(numDisplay);
-    // console.log("after updateDisplay()");
+    console.log("after updateCurNumber()");
+    updateDisplayAll(numDisplay);
+    console.log("after updateDisplayAll()");
     e.stopPropagation();
-    // console.log("end of addCharacter()");
+    console.log("end of addCharacter()");
   }
 }
 
@@ -63,15 +67,18 @@ function addCharacter(e) {
 function updateCurNumber(newContent) {
   console.log("entered updateCurNumber():")
   console.log(curNumber);
+  showIconEqual = false;
   switch (newContent) {
     case "SIGN":
       curNumberChangeSign();
       break;
     case ".":
+      updateOperationOnly = false; // enable solve() block in setNextOperation()
       resetCurNumberIfNotUsingSolution();
       curNumberAppendDecimal();
       break;
     default: // keys 0-9
+      updateOperationOnly = false; // enable solve() block in setNextOperation()
       resetCurNumberIfNotUsingSolution();
       if (curNumberUnderMaxLength()) {
       curNumberAppendString(newContent);
@@ -120,25 +127,33 @@ function curNumberAppendString(newString) {
 }
 
 function setNextOperation(operation) {
-  // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
-  // console.log("entered setNextOperation");
+  console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+  console.log("entered setNextOperation");
   // allow changing of operation type before solving.
+  showIconEqual = false;
   if (!updateOperationOnly) {
     if (nextOperation != null) {
-      // If use operation key before pressing =
-      // console.log("nextOperation NOT null");
+      // If use operation key before pressing (=)
+      console.log("nextOperation NOT null");
       solve();
+      showIconEqual = true;
     }
     numFirst = curNumberToNumber();
     curNumber = ["0"];
     curNumberNonNegative = true;
-    // console.log("numFirst = " + numFirst);
-    updateOperationOnly = true;  // reset at end of solve()
+    console.log("numFirst = " + numFirst);
+    updateOperationOnly = true;
+    // updateOperationOnly resets: end of solve(), and begin of updateCurNumber()
   }
   nextOperation = operation;
-  // console.log("nextOperation = " + nextOperation);
-  // console.log("end of setNextOperation");
-  // console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+  console.log("nextOperation = " + nextOperation);
+  showIconOperation = true;
+  console.log("showIconOperation = " + showIconOperation);
+  console.log("showIconEqual = " + showIconEqual);
+
+  updateDisplayIcons();
+  console.log("end of setNextOperation");
+  console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
 }
 
 function solve() {
@@ -179,11 +194,13 @@ function solve() {
   // Catch "Divide by 0" error
   if (divisionError == true) {
     resetGlobalVariables();
-    updateDisplay("ERROR - DIVIDE BY 0");
+    updateDisplayAll("ERROR - DIVIDE BY 0");
   } else if (solutionFound == true) {
     numSolution = solution.toString().split("");
     setNumDisplay(numSolution, numSolutionNonNegative);
-    updateDisplay(numDisplay);
+    showIconOperation = false;
+    showIconEqual = true;
+    updateDisplayAll(numDisplay);
     curNumber = numSolution;
     curNumberNonNegative = numSolutionNonNegative;
     numFirst = null;
@@ -224,8 +241,35 @@ function setNumDisplay(numberArray, numberNonNegative) {
   numDisplay = alteredNumber.join("");
 }
 
-function updateDisplay(content) {
+function updateDisplayAll(content) {
   displayMain.textContent = content;
+  updateDisplayIcons();
+}
+
+function updateDisplayIcons() {
+  // set status of Operation Icon
+  if (showIconOperation) {
+    switch (nextOperation) {
+      case "ADD":
+        displayIconOperation.textContent = "+";
+        break;
+      case "SUBTRACT":
+        displayIconOperation.textContent = "-";
+        break;
+      case "MULTIPLY":
+        displayIconOperation.textContent = "*";
+        break;
+      case "DIVIDE":
+        displayIconOperation.textContent = "/";
+        break;
+      default:
+        displayIconOperation.textContent = "E";
+    }
+  } else {
+    displayIconOperation.textContent = "";
+  }
+  // Set status of Equal Icon
+  displayIconEqual.textContent = (showIconEqual) ? "=" : "";
 }
 
 // returns true if under the maxLength. Does not count (.) toward length
@@ -282,7 +326,7 @@ function removeLastDigit() {
         curNumberNonNegative = true;
       }
       setNumDisplay(curNumber, curNumberNonNegative);
-      updateDisplay(numDisplay);
+      updateDisplayAll(numDisplay);
     }
   }
 }
@@ -290,14 +334,14 @@ function removeLastDigit() {
 function resetCalculator() {
   resetGlobalVariables();
   setNumDisplay(curNumber, curNumberNonNegative);
-  updateDisplay(numDisplay);
+  updateDisplayAll(numDisplay);
 }
 
 function clearDisplay() {
   curNumber = ["0"];
   curNumberNonNegative = true;
   setNumDisplay(curNumber, curNumberNonNegative);
-  updateDisplay(numDisplay);
+  updateDisplayAll(numDisplay);
 }
 
 function resetGlobalVariables() {
@@ -311,63 +355,6 @@ function resetGlobalVariables() {
   nextOperation = null;
   useSolutionNextOperation = false;
   updateOperationOnly = false;
-}
-
-
-
-
-// FUNCTIONS NOT YET BEING USED
-
-
-function insertStringAtPos(subString, existingString, index) {
-  let partOne = existingString.slice(0, index) + subString;
-  let partTwo = existingString.slice(index);
-  return partOne + partTwo;
-}
-
-// removes all occurences of a substring and returns resulting string
-function removeSubStringAll(myString, subString) {
-  while (myString.includes(subString)){
-    let index = myString.indexOf(subString);
-    let partOne = myString.slice(0, index);
-    let partTwo = myString.slice(index + subString.length);
-    myString = partOne + partTwo;
-  }
-  return myString
-}
-
-function round(number, precision) {
-  var shift = function (number, precision, reverseShift) {
-    if (reverseShift) {
-      precision = -precision;
-    }
-    numArray = ("" + number).split("e");
-    return +(numArray[0] + "e" + (numArray[1] ? (+numArray[1] + precision) : precision));
-  };
-  return shift(Math.round(shift(number, precision, false)), precision, true);
-}
-
-function showCountOfDigits(number) {
-  let integerPortion = Math.trunc(a);
-  let integerPortionAbs = Math.abs(integerPortion);
-  let mantissaAbs = Math.abs(a - integerPortion);
-  console.log("Int = " + integerPortionAbs);
-  let intString = integerPortionAbs.toString();
-  console.log("Int String = " + intString);
-  let intStringLength = intString.length;
-  console.log("count Int = " + intStringLength);
-
-  console.log("++++++++");
-
-  console.log("Man = " + mantissaAbs);
-  let manString = mantissaAbs.toString();
-  console.log("Man String = " + manString);
-  let manStringLength = manString.length;
-  console.log("count Man = " + manStringLength);
-
-  console.log("========");
-
-  let totalCount = intStringLength + manStringLength;
-  console.log("total Length = " + totalCount.toString());
-
+  showIconOperation = false;
+  showIconEqual = false;
 }
