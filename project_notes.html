@@ -9,8 +9,6 @@
     <!--___NOTES____ideas to implement_____________________________
 
 /////////////    FUNCTIONALITY ISSUES - IMPORTANT  ///////////////////////
-allocate() - in key listener.  Event is passed to allocate, but I don't think it gets passed out of allocate into the next called function....and it's called differently from the click listeners....eg: addCharacter vs addCharacter(e)
-
 
 highlight operation keys when pressed
 
@@ -24,18 +22,14 @@ listeners still need "false" after ('click', function, false)
 keycodes only register (keydown) once focus is on the current window...ie, click into the window of the calculator.
 
 how to add multiple keyCodes to an element (in data-key-code)
-  eg:  using data-key-name to call functions in JS
-        ::  keycode => element => element keyName => callback(keyName)
-
-  so want to be likethis:
-        ::  keycode 1  }
-                      .} => element => element keyName => callback(keyName)
-        ::  keycode 2  }
-
-  For example: number 1 can be in Numpad (97) or from top of QUERTY keyboard (49)
-
-
+  - I think i found a way to accept 2 key codes, using data-key-code-a/b
+  - what if i need to handle "21" or "21"+"61" , as in control-shift ?
   
+
+
+add instrucitions for keyboard shortcuts?  and maybe explain reset/clear/Del ?
+
+
 
 //////////////  BEAUTIFICATIN / SPACING  /////////////////////////////////
 

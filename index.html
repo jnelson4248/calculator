@@ -9,6 +9,11 @@
 
   <body>
     <div class="container-main unselectable">
+      <div class="container-power">
+        <div id="keyPower" class="key key-control">
+          <span>On / Off</span>
+        </div>
+      </div>
       <div class="container-display">
         <div id="displayMain" class="display display-main">0</div>
         <div class="display display-icons">
@@ -17,31 +22,130 @@
         </div>
       </div>
       <div class="container-keys">
+        <!-- Key Codes are used to match keyboard events-->
+        <!-- Codes a and b are individual, codes c are shift-key events -->
         <div id="controlKeys" class="keys-area-top">
-          <div id="keyReset" class="key key-control" data-key-code="82" data-key-name="RESET">Reset</div>
-          <div id="keyClear" class="key key-control" data-key-code="67" data-key-name="CLEAR">Clear</div>
-          <div id="keyDelete" class="key key-control" data-key-code="8" data-key-name="DELETE">Del</div>
+          <div id="keyReset" class="key key-control"
+                data-key-code-a="82"
+                data-key-name="RESET">
+                <span>Reset</span>
+          </div>
+          <div id="keyClear" class="key key-control"
+                data-key-code-a="67"
+                data-key-name="CLEAR">
+                <span>Clear</span>
+          </div>
+          <div id="keyDelete" class="key key-control"
+                data-key-code-a="68"
+                data-key-code-b="8"
+                data-key-name="DELETE">
+                <span>Del</span>
+          </div>
         </div>
         <div id="numberKeys" class="keys-area-main">
-          <div class="key key-numpad" data-key-code="103" data-key-name="7">7</div>
-          <div class="key key-numpad" data-key-code="104" data-key-name="8">8</div>
-          <div class="key key-numpad" data-key-code="105" data-key-name="9">9</div>
-          <div class="key key-numpad" data-key-code="100" data-key-name="4">4</div>
-          <div class="key key-numpad" data-key-code="101" data-key-name="5">5</div>
-          <div class="key key-numpad" data-key-code="102" data-key-name="6">6</div>
-          <div class="key key-numpad" data-key-code="97" data-key-name="1">1</div>
-          <div class="key key-numpad" data-key-code="98" data-key-name="2">2</div>
-          <div class="key key-numpad" data-key-code="99" data-key-name="3">3</div>
-          <div class="key key-numpad" data-key-code="83" data-key-name="SIGN">+/-</div>
-          <div class="key key-numpad" data-key-code="96" data-key-name="0">0</div>
-          <div class="key key-numpad" data-key-code="110" data-key-name=".">.</div>
+          <div class="key key-numpad"
+                data-key-code-a="103"
+                data-key-code-b="55"
+                data-key-name="7">
+                <span>7</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="104"
+                data-key-code-b="56"
+                data-key-name="8">
+                <span>8</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="105"
+                data-key-code-b="57"
+                data-key-name="9">
+                <span>9</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="100"
+                data-key-code-b="52"
+                data-key-name="4">
+                <span>4</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="101"
+                data-key-code-b="53"
+                data-key-name="5">
+                <span>5</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="102"
+                data-key-code-b="54"
+                data-key-name="6">
+                <span>6</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="97"
+                data-key-code-b="49"
+                data-key-name="1">
+                <span>1</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="98"
+                data-key-code-b="50"
+                data-key-name="2">
+                <span>2</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="99"
+                data-key-code-b="51"
+                data-key-name="3">
+                <span>3</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="83"
+                data-key-name="SIGN">
+                <span>+/-</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="96"
+                data-key-code-b="48"
+                data-key-name="0">
+                <span>0</span>
+          </div>
+          <div class="key key-numpad"
+                data-key-code-a="110"
+                data-key-code-b="190"
+                data-key-name=".">
+                <span>.</span>
+          </div>
         </div>
         <div id="operatorKeys" class="keys-area-right">
-          <div id="keyDivide" class="key key-operator" data-key-code="111" data-key-name="DIVIDE">/</div>
-          <div id="keyMultiply" class="key key-operator" data-key-code="106" data-key-name="MULTIPLY">*</div>
-          <div id="keySubtract" class="key key-operator" data-key-code="109" data-key-name="SUBTRACT">-</div>
-          <div id="keyAdd" class="key key-operator" data-key-code="107" data-key-name="ADD">+</div>
-          <div id="keyEqual" class="key key-operator" data-key-code="13" data-key-name="EQUAL">=</div>
+          <div id="keyDivide" class="key key-operator"
+                data-key-code-a="111"
+                data-key-code-b="191"
+                data-key-name="DIVIDE">
+                <span>/</span>
+          </div>
+          <div id="keyMultiply" class="key key-operator"
+                data-key-code-a="106"
+                data-key-code-c="56"
+                data-key-name="MULTIPLY">
+                <span>x</span>
+          </div>
+          <div id="keySubtract" class="key key-operator"
+                data-key-code-a="109"
+                data-key-code-b="173"
+                data-key-name="SUBTRACT">
+                <span>-</span>
+          </div>
+          <div id="keyAdd" class="key key-operator"
+                data-key-code-a="107"
+                data-key-code-c="61"
+                data-key-name="ADD">
+                <span>+</span>
+          </div>
+          <div id="keyEqual" class="key key-operator"
+                data-key-code-a="13"
+                data-key-code-b="61"
+                data-key-name="EQUAL">
+                <span>=</span>
+          </div>
         </div>
       </div>
     </div>

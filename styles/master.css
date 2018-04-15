@@ -14,7 +14,7 @@ html, body {
 
 * {
   box-sizing: border-box;
-  border: 1px solid hotpink;
+  /* border: 1px solid hotpink; */
 }
 
 .container-main {
@@ -22,12 +22,21 @@ html, body {
   border: 10px solid dimgrey;
   border-radius: 1rem;
   padding: 3rem 0;
-  background-color: forestgreen;
+  background-color: red;
 
 
   background-image: url("../images/psychedelic-waves.png");
   background-image: url("../images/dark-mosaic.png");
   /* background-position: center; */
+}
+
+.container-power {
+  display: flex;
+  /* flex-flow: nowrap row; */
+  /* align-items: flex-start; */
+  justify-content: flex-end;
+  margin-right: 3rem;
+  margin-bottom: 1rem;
 }
 
 .container-display {
@@ -105,6 +114,11 @@ html, body {
   justify-content: center;
 }
 
+#keyPower {
+  height: 3rem;
+  width: 6rem;
+}
+
 .key-control {
   font-size: 1.5em;
 }
@@ -117,7 +131,7 @@ html, body {
   font-size: 2.5em;
 }
 
-.unselectable { 
+.unselectable {
 -webkit-touch-callout: none; /* iOS Safari */
 -webkit-user-select: none;   /* Chrome/Safari/Opera */
 -khtml-user-select: none;    /* Konqueror */

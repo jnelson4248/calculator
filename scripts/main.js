@@ -58,37 +58,67 @@ for (let i = 0; i < numPadKeyList.length; i++) {
     event.stopPropagation();
   });
 }
-
+/*
+<div id="keyMultiply" class="key key-operator"
+      data-key-code-a="106"
+      data-key-code-c="16";
+      data-key-code-d="56";
+      data-key-name="MULTIPLY">
+      *
+</div>
+<div id="keyAdd" class="key key-operator"
+      data-key-code-a="107"
+      data-key-code-c="16";
+      data-key-code-d="61";
+      data-key-name="ADD">
+      +
+</div>
+*/
 
 window.addEventListener('keydown', runKeyCodeAction);
 
+// All keys have a code "a", but only select keys have codes "b" or "c"
+// Codes "a" and "b" are all unique, but "c" are "shift" variations of "a" codes
 function runKeyCodeAction(event) {
-  console.log("Key Pressed: keyCode = " + event.keyCode);
-  const element = document.querySelector(`.key[data-key-code="${event.keyCode}"]`);
-  console.log("element found is");
-  console.log(element);
 
-  let operatorKeyNames = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
-  let elementKeyName = element.dataset.keyName;
-  classes = element.classList;
-  if (classes.contains('key-numpad')) {
-    addCharacter(elementKeyName);
-  } else if (operatorKeyNames.includes(elementKeyName)) {
-    setNextOperation(elementKeyName);
-  } else {
-    switch (elementKeyName) {
-      case "RESET":
-        resetCalculator();
-        break;
-      case "CLEAR":
-        clearDisplay();
-        break;
-      case "DELETE":
-        removeLastDigit();
-        break;
-      case "EQUAL":
-        solve();
-        break;
+  let withShift = event.shiftKey
+
+  console.log("Key Pressed: keyCode = " + event.keyCode);
+  const elementA = document.querySelector(`.key[data-key-code-a="${event.keyCode}"]`);
+  const elementB = document.querySelector(`.key[data-key-code-b="${event.keyCode}"]`);
+  const elementC = document.querySelector(`.key[data-key-code-c="${event.keyCode}"]`);
+  let element = null;
+  if (elementC && event.shiftKey) {
+    element = elementC;
+  } else if (elementA || elementB) {
+    element = (elementA) ? elementA : elementB;
+  }
+  // only run if a key is matched to the event
+  if (element !== null) {
+    console.log("element found:");
+    console.log(element);
+    let operatorKeyNames = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
+    let elementKeyName = element.dataset.keyName;
+    classes = element.classList;
+    if (classes.contains('key-numpad')) {
+      addCharacter(elementKeyName);
+    } else if (operatorKeyNames.includes(elementKeyName)) {
+      setNextOperation(elementKeyName);
+    } else {
+      switch (elementKeyName) {
+        case "RESET":
+          resetCalculator();
+          break;
+        case "CLEAR":
+          clearDisplay();
+          break;
+        case "DELETE":
+          removeLastDigit();
+          break;
+        case "EQUAL":
+          solve();
+          break;
+      }
     }
   }
 }
@@ -308,7 +338,7 @@ function updateDisplayIcons() {
         displayIconOperation.textContent = "-";
         break;
       case "MULTIPLY":
-        displayIconOperation.textContent = "*";
+        displayIconOperation.textContent = "x";
         break;
       case "DIVIDE":
         displayIconOperation.textContent = "/";
@@ -325,7 +355,7 @@ function updateDisplayIcons() {
 
 // returns true if under the maxLength. Does not count (.) toward length
 function curNumberUnderMaxLength() {
-  let maxLength = 25;
+  let maxLength = 21;
   let strippedCurNumber = curNumber.filter(item => item !== ".");
   if (strippedCurNumber.length < maxLength) {
     return true;
