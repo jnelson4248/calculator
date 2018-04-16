@@ -21,7 +21,7 @@ html, body {
   width: 36rem;
   border: 10px solid dimgrey;
   border-radius: 1rem;
-  padding: 3rem 0;
+  padding: 3rem;
   background-color: red;
   background-image: url("../images/dark-mosaic.png");
 }
@@ -64,7 +64,8 @@ html, body {
 }
 
 .display-icons {
-  font-size: 1.6rem;
+  font-size: 2rem;
+  line-height: 70%;
   border-left-width: 0;
   border-radius: 0 1rem 1rem 0;
   flex-flow: nowrap column;
@@ -73,14 +74,28 @@ html, body {
 }
 
 .container-keys {
+  border: 2px solid lightblue;
+  /* position: relative; */
+  /* padding-top: 100%; */
+  /* NEW CODE ABOVE THIS LINE */
   height: 30rem;
   width: 30rem;
+  /* width: 100%; */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(5, 1fr);
   grid-gap: 1rem;
   margin: auto;
 }
+
+/*
+ TO MAKE A RESPONSIVE SQUARE
+.container-keys:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+*/
 
 .keys-area-top {
   grid-area: 1 / 1 / 2 / 4;
@@ -114,6 +129,10 @@ html, body {
   justify-content: center;
 }
 
+.key:hover {
+  border: 0.15rem solid lightgreen;
+}
+
 #keyPower {
   height: 3rem;
   width: 6rem;
@@ -129,6 +148,11 @@ html, body {
 
 .key-operator {
   font-size: 2.5em;
+}
+
+
+.highlighted {
+  background-color: pink;
 }
 
 .unselectable {

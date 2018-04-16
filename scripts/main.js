@@ -327,6 +327,7 @@ function updateDisplayAll(content) {
 function updateDisplayIcons() {
   // set status of Operation Icon
   if (showIconOperation) {
+    highlightKey(nextOperation);
     switch (nextOperation) {
       case "ADD":
         displayIconOperation.textContent = "+";
@@ -345,6 +346,7 @@ function updateDisplayIcons() {
     }
   } else {
     displayIconOperation.textContent = "";
+    removeOperationKeyHighlightAll();
   }
   // Set status of Equal Icon
   displayIconEqual.textContent = (showIconEqual) ? "=" : "";
@@ -407,6 +409,21 @@ function removeLastDigit() {
       updateDisplayAll(numDisplay);
     }
   }
+}
+
+function highlightKey(dataKeyName) {
+  let selectedKey = document.querySelector("[data-key-name=" + CSS.escape(dataKeyName) + "]");
+  selectedKey.classList.add('highlighted');
+}
+
+function removeOperationKeyHighlightAll() {
+  let highlightedKeys = document.querySelectorAll(".highlighted");
+  [...highlightedKeys].forEach( item => {
+    if (item.classList.contains('key-operator')) {
+      item.classList.remove('highlighted');
+    }
+  });
+
 }
 
 function togglePower() {
