@@ -23,11 +23,7 @@ html, body {
   border-radius: 1rem;
   padding: 3rem 0;
   background-color: red;
-
-
-  background-image: url("../images/psychedelic-waves.png");
   background-image: url("../images/dark-mosaic.png");
-  /* background-position: center; */
 }
 
 .container-power {
@@ -54,6 +50,10 @@ html, body {
   align-items: center;
 }
 
+.display-off {
+  background-color: dimgrey;
+}
+
 .display-main {
   font-size: 2rem;
   border-right-width: 0;
@@ -64,12 +64,12 @@ html, body {
 }
 
 .display-icons {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   border-left-width: 0;
   border-radius: 0 1rem 1rem 0;
   flex-flow: nowrap column;
-  justify-content: space-around;
-  padding: 0.3rem;
+  justify-content: center;
+  /* padding: 0.3rem; */
 }
 
 .container-keys {

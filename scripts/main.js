@@ -3,7 +3,7 @@
 
 let curNumber = ["0"];
 let curNumberNonNegative = true;
-let numDisplay = "0";
+let numDisplay = "0";  // Set to "" when power is off. If starting "on" must be "0" here
 let numFirst = null;
 let numSecond = null;
 let numSolution = [];
@@ -13,10 +13,14 @@ let useSolutionNextOperation = false;
 let updateOperationOnly = false;
 let showIconOperation = false;
 let showIconEqual = false;
+let powerOn = false;
 
 const displayMain = document.getElementById('displayMain');
 const displayIconOperation = document.getElementById('displayIconOperation');
 const displayIconEqual = document.getElementById('displayIconEqual');
+
+const keyPower = document.getElementById('keyPower');
+keyPower.addEventListener('click', togglePower, false);
 
 const keyReset = document.getElementById('keyReset');
 keyReset.addEventListener('click', resetCalculator, false);
@@ -29,23 +33,33 @@ keyDelete.addEventListener('click', removeLastDigit, false);
 
 const keyDivide = document.getElementById('keyDivide');
 // keyDivide.addEventListener('click', setNextOperation, false);
-keyDivide.addEventListener('click', () => { setNextOperation(keyDivide.dataset.keyName) }, false);
+keyDivide.addEventListener('click', () => {
+  setNextOperation(keyDivide.dataset.keyName);
+}, false);
 
 const keyMultiply = document.getElementById('keyMultiply');
 // keyMultiply.addEventListener('click', setNextOperation, false);
-keyMultiply.addEventListener('click', () => { setNextOperation(keyMultiply.dataset.keyName) }, false);
+keyMultiply.addEventListener('click', () => {
+  setNextOperation(keyMultiply.dataset.keyName);
+}, false);
 
 const keySubtract = document.getElementById('keySubtract');
 // keySubtract.addEventListener('click', setNextOperation, false);
-keySubtract.addEventListener('click', () => { setNextOperation(keySubtract.dataset.keyName) }, false);
+keySubtract.addEventListener('click', () => {
+  setNextOperation(keySubtract.dataset.keyName);
+}, false);
 
 const keyAdd = document.getElementById('keyAdd');
 // keyAdd.addEventListener('click', setNextOperation, false);
-keyAdd.addEventListener('click', () => { setNextOperation(keyAdd.dataset.keyName) }, false);
+keyAdd.addEventListener('click', () => {
+  setNextOperation(keyAdd.dataset.keyName);
+}, false);
 
 const keyEqual = document.getElementById('keyEqual');
 // keyEqual.addEventListener('click', solve, false);
-keyEqual.addEventListener('click', () => { solve(keyEqual.dataset.keyName) }, false);
+keyEqual.addEventListener('click', () => {
+  solve(keyEqual.dataset.keyName);
+}, false);
 
 // const containerKeys = document.getElementById('numberKeys');
 // containerKeys.addEventListener('click', addCharacter, false);
@@ -58,24 +72,8 @@ for (let i = 0; i < numPadKeyList.length; i++) {
     event.stopPropagation();
   });
 }
-/*
-<div id="keyMultiply" class="key key-operator"
-      data-key-code-a="106"
-      data-key-code-c="16";
-      data-key-code-d="56";
-      data-key-name="MULTIPLY">
-      *
-</div>
-<div id="keyAdd" class="key key-operator"
-      data-key-code-a="107"
-      data-key-code-c="16";
-      data-key-code-d="61";
-      data-key-name="ADD">
-      +
-</div>
-*/
 
-window.addEventListener('keydown', runKeyCodeAction);
+window.addEventListener('keyup', runKeyCodeAction);
 
 // All keys have a code "a", but only select keys have codes "b" or "c"
 // Codes "a" and "b" are all unique, but "c" are "shift" variations of "a" codes
@@ -88,6 +86,7 @@ function runKeyCodeAction(event) {
   const elementB = document.querySelector(`.key[data-key-code-b="${event.keyCode}"]`);
   const elementC = document.querySelector(`.key[data-key-code-c="${event.keyCode}"]`);
   let element = null;
+  // must check C+shift first. ode-c keys are same as code-b keys with shift
   if (elementC && event.shiftKey) {
     element = elementC;
   } else if (elementA || elementB) {
@@ -106,6 +105,9 @@ function runKeyCodeAction(event) {
       setNextOperation(elementKeyName);
     } else {
       switch (elementKeyName) {
+        case "POWER":
+          togglePower();
+          break;
         case "RESET":
           resetCalculator();
           break;
@@ -124,20 +126,13 @@ function runKeyCodeAction(event) {
 }
 
 function addCharacter(keyName) {
-  // if (e.target !== e.currentTarget) {
     console.log("inside addCharacter");
-    // console.log("character clicked = " + e.target.dataset.keyName);
     console.log("character clicked = " + keyName);
-    //  avoid case in setNextOperation(): using previous solution as numFirst
-    numSecond = null;
-    // updateCurNumber(e.target.dataset.keyName);
     updateCurNumber(keyName);
     console.log("after updateCurNumber()");
     updateDisplayAll(numDisplay);
     console.log("after updateDisplayAll()");
-    // e.stopPropagation();
     console.log("end of addCharacter()");
-  // }
 }
 
 // clicking (.) or (0-9) resets the curNumber to ["0"] to exit the situation
@@ -323,8 +318,10 @@ function setNumDisplay(numberArray, numberNonNegative) {
 }
 
 function updateDisplayAll(content) {
-  displayMain.textContent = content;
-  updateDisplayIcons();
+  if (powerOn) {
+    displayMain.textContent = content;
+    updateDisplayIcons();
+  }
 }
 
 function updateDisplayIcons() {
@@ -412,6 +409,21 @@ function removeLastDigit() {
   }
 }
 
+function togglePower() {
+  if (powerOn) {
+     numDisplay = "";
+     showIconOperation = false;
+     showIconEqual = false;
+     updateDisplayAll(numDisplay);  // requires powerOn = true
+     powerOn = false;
+   } else {
+     powerOn = true;
+     resetCalculator();  // requires powerOn = true for updateDisplayAll()
+   }
+   displays = document.querySelectorAll('.display');
+   [...displays].forEach( item => item.classList.toggle('display-off'));
+}
+
 function resetCalculator() {
   resetGlobalVariables();
   setNumDisplay(curNumber, curNumberNonNegative);
@@ -425,6 +437,7 @@ function clearDisplay() {
   updateDisplayAll(numDisplay);
 }
 
+// does not reset powerOn
 function resetGlobalVariables() {
   curNumber = ["0"];
   curNumberNonNegative = true;
