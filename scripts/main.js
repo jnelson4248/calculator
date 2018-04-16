@@ -226,8 +226,9 @@ function setNextOperation(operation) {
   showIconOperation = true;
   console.log("showIconOperation = " + showIconOperation);
   console.log("showIconEqual = " + showIconEqual);
-
-  updateDisplayIcons();
+  if (powerOn) {
+    updateDisplayIcons();
+  }
   console.log("end of setNextOperation");
   console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
 }
@@ -327,6 +328,7 @@ function updateDisplayAll(content) {
 function updateDisplayIcons() {
   // set status of Operation Icon
   if (showIconOperation) {
+    removeOperationKeyHighlightAll();
     highlightKey(nextOperation);
     switch (nextOperation) {
       case "ADD":
@@ -336,7 +338,7 @@ function updateDisplayIcons() {
         displayIconOperation.textContent = "-";
         break;
       case "MULTIPLY":
-        displayIconOperation.textContent = "x";
+        displayIconOperation.textContent = "*";
         break;
       case "DIVIDE":
         displayIconOperation.textContent = "/";
@@ -345,8 +347,8 @@ function updateDisplayIcons() {
         displayIconOperation.textContent = "E";
     }
   } else {
-    displayIconOperation.textContent = "";
     removeOperationKeyHighlightAll();
+    displayIconOperation.textContent = "";
   }
   // Set status of Equal Icon
   displayIconEqual.textContent = (showIconEqual) ? "=" : "";
@@ -359,7 +361,7 @@ function curNumberUnderMaxLength() {
   if (strippedCurNumber.length < maxLength) {
     return true;
   } else {
-    alert("Input length reached. I can't add any more digits :( ");
+    alert("Maximum characters reached. No more digits can be added");
     return false;
   }
 }
@@ -412,8 +414,10 @@ function removeLastDigit() {
 }
 
 function highlightKey(dataKeyName) {
-  let selectedKey = document.querySelector("[data-key-name=" + CSS.escape(dataKeyName) + "]");
-  selectedKey.classList.add('highlighted');
+  if (powerOn) {
+    let selectedKey = document.querySelector("[data-key-name=" + CSS.escape(dataKeyName) + "]");
+    selectedKey.classList.add('highlighted');
+  }
 }
 
 function removeOperationKeyHighlightAll() {

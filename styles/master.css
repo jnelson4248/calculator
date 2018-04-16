@@ -2,8 +2,56 @@
   *   Comment
   */
 
+/*
+  background-color: #1a1a1a;
+  background-color: #262626;
+  background-color: #333333;
+  background-color: #404040;
+  background-color: #4d4d4d;
+  background-color: #595959;
+  background-color: #666666;
+  background-color: #737373;
+  background-color: #808080;
+  background-color: #8c8c8c;
+  background-color: #999999;
+  background-color: #a6a6a6;
+  background-color: #b3b3b3;
+  background-color: #bfbfbf;
+  background-color: #cccccc;
+  background-color: #d9d9d9;
+  background-color: #e6e6e6;
+  background-color: #f2f2f2;
+  background-color: #ffffff;
+
+  background-color: #4d0026;
+  background-color: #660033;
+  background-color: #800040;
+  background-color: #99004d;
+  background-color: #b30059;
+  background-color: #cc0066;
+  background-color: #e60073;
+  background-color: #ff0080;
+  background-color: #ff1a8c;
+  background-color: #ff3399;
+  background-color: #ff4da6;
+  background-color: hotpink;
+  background-color: #ff66b3;
+  background-color: #ff80bf;
+  background-color: #ff99cc;
+  background-color: #ffb3d9;
+  background-color: #ffcce6;
+  background-color: #ffe6f2;
+  background-color: #ffffff;
+  background-color: #ffb3e6;
+  background-color: #ffccee;
+  background-color: #ffe6f7;
+
+
+*/
+
+
 html, body {
-  /* background-color: black; */
+  /* background-color: dimgrey; */
   font-family: Arial, Helvetica, sans-serif;
   /* font-family: Tahoma, Geneva, sans-serif; */
   /* font-family: Verdana, Geneva, sans-serif; */
@@ -14,115 +62,153 @@ html, body {
 
 * {
   box-sizing: border-box;
-  /* border: 1px solid hotpink; */
+  /* border: 0.1vmin solid red; */
 }
 
 .container-main {
-  width: 36rem;
-  border: 10px solid dimgrey;
-  border-radius: 1rem;
-  padding: 3rem;
-  background-color: red;
-  background-image: url("../images/dark-mosaic.png");
+  width: 60vmin;
+  /* height: 80vmin; */
+  border: 0.8vmin solid #ff0080;
+  border: 0.8vmin solid #cc0066;
+  border: 0.8vmin solid #4d0026;
+  border: 0.8vmin solid #660033;
+  border: 0.8vmin solid #800040;
+  border: 0.8vmin solid #b30059;
+  border: 0.8vmin solid #99004d;
+  border-radius: 1.8vmin;
+  margin: 5vmin auto;
+  padding: 5vmin 0;
+  /* margin: 3rem auto; */
+  background-color: hotpink;
+  background-color: #ff66b3;
+  background-color: #ff99cc;
+  background-color: #ffb3d9;
+  background-color: #ffb3e6;
+  background-color: #ffcce6;
+  background-color: #ffccee;
+  /* background-image: url("../images/arabesque.png"); */
+  background-image: url("../images/vichy.png");
 }
 
 .container-power {
+  width: 50vmin;
+  height: 5vmin;
   display: flex;
   /* flex-flow: nowrap row; */
   /* align-items: flex-start; */
   justify-content: flex-end;
-  margin-right: 3rem;
-  margin-bottom: 1rem;
+  margin: 0 auto 3vmin;
 }
 
 .container-display {
-  width: 30rem;
-  height: 5rem;
+  width: 50vmin;
+  height: 7vmin;
   display: grid;
   grid-template-columns: 11fr 1fr;
-  margin: 0 auto 3rem;
+  margin: 0 auto 3vmin;
 }
 
 .display {
+  /* font-size: 2rem; */
+  font-size: 3vmin;
   background-color: silver;
-  border: 0.25rem solid dimgrey;
+  background-color: #8c8c8c;
+  background-color: #999999;
+  background-color: #a6a6a6;
+  background-color: #b3b3b3;
+  background-color: #bfbfbf;
+  background-color: #cccccc;
+  background-color: #e6e6e6;
+  background-color: #f2f2f2;
+  background-color: #ffffff;
+  background-color: #d9d9d9;
+  border: 0.5vmin solid #595959;
+  border: 0.5vmin solid #99004d;
+  border-radius: 1.3vmin;
   display: flex;
   align-items: center;
 }
 
 .display-off {
-  background-color: dimgrey;
+  background-color: #1a1a1a;
+  background-color: #262626;
+  background-color: #333333;
+  background-color: #404040;
+  background-color: #4d4d4d;
+  background-color: #595959;
+  background-color: #666666;
+  background-color: #737373;
+  background-color: #808080;
+  background-color: #8c8c8c;
 }
 
 .display-main {
-  font-size: 2rem;
   border-right-width: 0;
-  border-radius: 1rem 0 0 1rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   flex-flow: nowrap row;
   justify-content: flex-end;
-  /* padding-right: 0.5rem; */
+  padding-right: 0.5vmin;
 }
 
 .display-icons {
-  font-size: 2rem;
   line-height: 70%;
   border-left-width: 0;
-  border-radius: 0 1rem 1rem 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   flex-flow: nowrap column;
   justify-content: center;
-  /* padding: 0.3rem; */
 }
 
 .container-keys {
-  border: 2px solid lightblue;
-  /* position: relative; */
-  /* padding-top: 100%; */
-  /* NEW CODE ABOVE THIS LINE */
-  height: 30rem;
-  width: 30rem;
-  /* width: 100%; */
+  height: 52vmin;
+  width: 50vmin;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-gap: 1rem;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   margin: auto;
+  /* grid-gap: 1.8vmin; */
 }
 
-/*
- TO MAKE A RESPONSIVE SQUARE
-.container-keys:after {
-  content: "";
-  display: block;
-  padding-bottom: 100%;
-}
-*/
 
 .keys-area-top {
-  grid-area: 1 / 1 / 2 / 4;
+  grid-area: 1 / 1 / 2 / 9;
   display: grid;
   grid-template-columns: 3fr 3fr 2fr;
-  grid-column-gap: 2rem;
-  margin-bottom: 1.5rem;
+  grid-column-gap: 4vmin;
+  margin-right: 3vmin;
+  /* margin-bottom: 5vmin; */
 }
 .keys-area-main {
-  grid-area: 2 / 1 / 6 / 4;
+  grid-area: 3 / 1 / 11 / 9;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  grid-gap: 1.5rem;
+  grid-gap: 3vmin;
+  margin-right: 3vmin;
+  /* margin-top: 1.8vmin; */
 }
 .keys-area-right {
-  grid-area: 1 / 4 / 6 / 5;
+  grid-area: 1 / 10 / 11 / 12;
   display: grid;
-  grid-row-gap: 1.5rem;
-  margin-left: 1.5rem;
+  grid-row-gap: 3vmin;
+  /* margin-top: 3vmin; */
+  /* margin-left: 1vmin; */
+  /* margin-right: 1vmin; */
 }
 
 .key {
-  /* font-size: 1.5em; */
-  background-color: lightgrey;
-  border: 0.15rem solid dimgrey;
-  border-radius: 1rem;
+  color: #cc0066;
+  color: #b30059;
+  font-size: 3.5vmin;
+  background-color: #ffcce6;
+  background-color: #ffe6f7;
+  background-color: #ffe6f2;
+  border: 0.25vmin solid #cc0066;
+  border: 0.25vmin solid #99004d;
+  border: 0.25vmin solid #b30059;
+  border-radius: 4vmin;
+  box-shadow: 0.4vmin 0.4vmin 0.5vmin 0px rgba(0,0,0,0.75);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -130,29 +216,51 @@ html, body {
 }
 
 .key:hover {
-  border: 0.15rem solid lightgreen;
+  border: 0.3vmin solid lightgreen;
+  border: 0.3vmin solid #b30059;
+  border: 0.3vmin solid #cc0066;
+  border: 0.3vmin solid #e60073;
+  border: 0.3vmin solid #ff0080;
+  border: 0.3vmin solid #ff1a8c;
+  border: 0.3vmin solid hotpink;
+  border: 0.3vmin solid #ff80bf;
+  border: 0.3vmin solid #ff3399;
+  border: 0.3vmin solid #ff4da6;
+  border: 0.3vmin solid #ff66b3;
 }
 
 #keyPower {
-  height: 3rem;
-  width: 6rem;
+  padding: 0 0.5vmin;
 }
 
 .key-control {
-  font-size: 1.5em;
+  font-size: 2.5vmin;
+  border-radius: 1.8vmin;
 }
 
 .key-numpad {
-  font-size: 2.5em;
 }
 
 .key-operator {
-  font-size: 2.5em;
 }
 
 
 .highlighted {
-  background-color: pink;
+  background-color: #e60073;
+  background-color: #ff0080;
+  background-color: #ff1a8c;
+  background-color: #ff66b3;
+  background-color: #ff99cc;
+  background-color: #ffcce6;
+  background-color: #ffb3d9;
+  background-color: #ff3399;
+  background-color: #ff4da6;
+  background-color: #ff80bf;
+
+  background-color: #ff80bf;
+  background-color: #ff80bf;
+  background-color: #ffccee;
+  background-color: #ffb3e6;
 }
 
 .unselectable {
