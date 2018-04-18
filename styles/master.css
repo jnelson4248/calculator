@@ -12,11 +12,12 @@ html, body {
 .container-main {
   width: 60vmin;
   border: 0.8vmin solid #99004d;
-  border-radius: 1.8vmin;
+  border-radius: 6vmin;
   margin: 5vmin auto;
   padding: 5vmin 0;
   background-color: #ffccee;
   background-image: url("../images/vichy.png");
+  box-shadow: 0.4vmin 0.4vmin 0.5vmin 0px rgba(0,0,0,0.75);
 }
 
 .container-power {
@@ -39,7 +40,7 @@ html, body {
   font-size: 3vmin;
   background-color: #d9d9d9;
   border: 0.5vmin solid #99004d;
-  border-radius: 1.3vmin;
+  border-radius: 1.8vmin;
   display: flex;
   align-items: center;
 }
