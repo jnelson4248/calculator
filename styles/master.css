@@ -1,92 +1,21 @@
-/**
-  *   Comment
-  */
-
-/*
-  background-color: #1a1a1a;
-  background-color: #262626;
-  background-color: #333333;
-  background-color: #404040;
-  background-color: #4d4d4d;
-  background-color: #595959;
-  background-color: #666666;
-  background-color: #737373;
-  background-color: #808080;
-  background-color: #8c8c8c;
-  background-color: #999999;
-  background-color: #a6a6a6;
-  background-color: #b3b3b3;
-  background-color: #bfbfbf;
-  background-color: #cccccc;
-  background-color: #d9d9d9;
-  background-color: #e6e6e6;
-  background-color: #f2f2f2;
-  background-color: #ffffff;
-
-  background-color: #4d0026;
-  background-color: #660033;
-  background-color: #800040;
-  background-color: #99004d;
-  background-color: #b30059;
-  background-color: #cc0066;
-  background-color: #e60073;
-  background-color: #ff0080;
-  background-color: #ff1a8c;
-  background-color: #ff3399;
-  background-color: #ff4da6;
-  background-color: hotpink;
-  background-color: #ff66b3;
-  background-color: #ff80bf;
-  background-color: #ff99cc;
-  background-color: #ffb3d9;
-  background-color: #ffcce6;
-  background-color: #ffe6f2;
-  background-color: #ffffff;
-  background-color: #ffb3e6;
-  background-color: #ffccee;
-  background-color: #ffe6f7;
 
 
-*/
-
+  * {
+    box-sizing: border-box;
+  }
 
 html, body {
-  /* background-color: dimgrey; */
+  background-color: #f2f2f2;
   font-family: Arial, Helvetica, sans-serif;
-  /* font-family: Tahoma, Geneva, sans-serif; */
-  /* font-family: Verdana, Geneva, sans-serif; */
-  /* font-family: 'Times New Roman', Times, serif; */
-  /* font-family: Georgia, Serif; */
-  /*min-width: 1280px;*/
-}
-
-* {
-  box-sizing: border-box;
-  /* border: 0.1vmin solid red; */
 }
 
 .container-main {
   width: 60vmin;
-  /* height: 80vmin; */
-  border: 0.8vmin solid #ff0080;
-  border: 0.8vmin solid #cc0066;
-  border: 0.8vmin solid #4d0026;
-  border: 0.8vmin solid #660033;
-  border: 0.8vmin solid #800040;
-  border: 0.8vmin solid #b30059;
   border: 0.8vmin solid #99004d;
   border-radius: 1.8vmin;
   margin: 5vmin auto;
   padding: 5vmin 0;
-  /* margin: 3rem auto; */
-  background-color: hotpink;
-  background-color: #ff66b3;
-  background-color: #ff99cc;
-  background-color: #ffb3d9;
-  background-color: #ffb3e6;
-  background-color: #ffcce6;
   background-color: #ffccee;
-  /* background-image: url("../images/arabesque.png"); */
   background-image: url("../images/vichy.png");
 }
 
@@ -94,10 +23,8 @@ html, body {
   width: 50vmin;
   height: 5vmin;
   display: flex;
-  /* flex-flow: nowrap row; */
-  /* align-items: flex-start; */
   justify-content: flex-end;
-  margin: 0 auto 3vmin;
+  margin: 0 auto 5vmin;
 }
 
 .container-display {
@@ -105,41 +32,21 @@ html, body {
   height: 7vmin;
   display: grid;
   grid-template-columns: 11fr 1fr;
-  margin: 0 auto 3vmin;
+  margin: 0 auto 8vmin;
 }
 
 .display {
-  /* font-size: 2rem; */
   font-size: 3vmin;
-  background-color: silver;
-  background-color: #8c8c8c;
-  background-color: #999999;
-  background-color: #a6a6a6;
-  background-color: #b3b3b3;
-  background-color: #bfbfbf;
-  background-color: #cccccc;
-  background-color: #e6e6e6;
-  background-color: #f2f2f2;
-  background-color: #ffffff;
   background-color: #d9d9d9;
-  border: 0.5vmin solid #595959;
   border: 0.5vmin solid #99004d;
   border-radius: 1.3vmin;
   display: flex;
   align-items: center;
 }
 
+/* alt display color then calculator is turned off */
 .display-off {
-  background-color: #1a1a1a;
-  background-color: #262626;
-  background-color: #333333;
-  background-color: #404040;
-  background-color: #4d4d4d;
-  background-color: #595959;
-  background-color: #666666;
-  background-color: #737373;
-  background-color: #808080;
-  background-color: #8c8c8c;
+  background-color: #999999;
 }
 
 .display-main {
@@ -167,18 +74,20 @@ html, body {
   grid-template-columns: repeat(11, 1fr);
   grid-template-rows: repeat(10, 1fr);
   margin: auto;
-  /* grid-gap: 1.8vmin; */
 }
 
+/**
+  *   Key Grid Areas
+  */
 
 .keys-area-top {
   grid-area: 1 / 1 / 2 / 9;
   display: grid;
-  grid-template-columns: 3fr 3fr 2fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 4vmin;
   margin-right: 3vmin;
-  /* margin-bottom: 5vmin; */
 }
+
 .keys-area-main {
   grid-area: 3 / 1 / 11 / 9;
   display: grid;
@@ -186,27 +95,19 @@ html, body {
   grid-template-rows: repeat(4, 1fr);
   grid-gap: 3vmin;
   margin-right: 3vmin;
-  /* margin-top: 1.8vmin; */
 }
+
 .keys-area-right {
   grid-area: 1 / 10 / 11 / 12;
   display: grid;
   grid-row-gap: 3vmin;
-  /* margin-top: 3vmin; */
-  /* margin-left: 1vmin; */
-  /* margin-right: 1vmin; */
 }
 
 .key {
-  color: #cc0066;
   color: #b30059;
   font-size: 3.5vmin;
-  background-color: #ffcce6;
-  background-color: #ffe6f7;
   background-color: #ffe6f2;
-  border: 0.25vmin solid #cc0066;
-  border: 0.25vmin solid #99004d;
-  border: 0.25vmin solid #b30059;
+  border: 0.3vmin solid #b30059;
   border-radius: 4vmin;
   box-shadow: 0.4vmin 0.4vmin 0.5vmin 0px rgba(0,0,0,0.75);
   cursor: pointer;
@@ -216,58 +117,26 @@ html, body {
 }
 
 .key:hover {
-  border: 0.3vmin solid lightgreen;
-  border: 0.3vmin solid #b30059;
-  border: 0.3vmin solid #cc0066;
-  border: 0.3vmin solid #e60073;
-  border: 0.3vmin solid #ff0080;
-  border: 0.3vmin solid #ff1a8c;
-  border: 0.3vmin solid hotpink;
-  border: 0.3vmin solid #ff80bf;
-  border: 0.3vmin solid #ff3399;
-  border: 0.3vmin solid #ff4da6;
   border: 0.3vmin solid #ff66b3;
-}
-
-#keyPower {
-  padding: 0 0.5vmin;
+  color: #ff66b3;
 }
 
 .key-control {
-  font-size: 2.5vmin;
+  font-size: 2.2vmin;
   border-radius: 1.8vmin;
+  padding: 0 0.75vmin;
 }
-
-.key-numpad {
-}
-
-.key-operator {
-}
-
 
 .highlighted {
-  background-color: #e60073;
-  background-color: #ff0080;
-  background-color: #ff1a8c;
-  background-color: #ff66b3;
-  background-color: #ff99cc;
-  background-color: #ffcce6;
-  background-color: #ffb3d9;
-  background-color: #ff3399;
-  background-color: #ff4da6;
-  background-color: #ff80bf;
-
-  background-color: #ff80bf;
-  background-color: #ff80bf;
-  background-color: #ffccee;
   background-color: #ffb3e6;
 }
 
+/* prevent selection of text while clicking on buttons */
 .unselectable {
--webkit-touch-callout: none; /* iOS Safari */
--webkit-user-select: none;   /* Chrome/Safari/Opera */
--khtml-user-select: none;    /* Konqueror */
--moz-user-select: none;      /* Firefox */
--ms-user-select: none;       /* Internet Explorer/Edge */
+  -webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
 user-select: none;
 }

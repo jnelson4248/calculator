@@ -1,15 +1,19 @@
 
-
+/**
+  *   Global Variables and Event Listeners
+  */
 
 let curNumber = ["0"];
 let curNumberNonNegative = true;
-let numDisplay = "0";  // Set to "" when power is off. If starting "on" must be "0" here
+let numDisplay = "0";
 let numFirst = null;
 let numSecond = null;
 let numSolution = [];
 let numSolutionNonNegative = true;
 let nextOperation = null;
+// Indicates solution value is being used as first number of next operation
 let useSolutionNextOperation = false;
+// Idicates that user changed operation type before solving
 let updateOperationOnly = false;
 let showIconOperation = false;
 let showIconEqual = false;
@@ -32,70 +36,63 @@ const keyDelete = document.getElementById('keyDelete');
 keyDelete.addEventListener('click', removeLastDigit, false);
 
 const keyDivide = document.getElementById('keyDivide');
-// keyDivide.addEventListener('click', setNextOperation, false);
 keyDivide.addEventListener('click', () => {
   setNextOperation(keyDivide.dataset.keyName);
 }, false);
 
 const keyMultiply = document.getElementById('keyMultiply');
-// keyMultiply.addEventListener('click', setNextOperation, false);
 keyMultiply.addEventListener('click', () => {
   setNextOperation(keyMultiply.dataset.keyName);
 }, false);
 
 const keySubtract = document.getElementById('keySubtract');
-// keySubtract.addEventListener('click', setNextOperation, false);
 keySubtract.addEventListener('click', () => {
   setNextOperation(keySubtract.dataset.keyName);
 }, false);
 
 const keyAdd = document.getElementById('keyAdd');
-// keyAdd.addEventListener('click', setNextOperation, false);
 keyAdd.addEventListener('click', () => {
   setNextOperation(keyAdd.dataset.keyName);
 }, false);
 
 const keyEqual = document.getElementById('keyEqual');
-// keyEqual.addEventListener('click', solve, false);
 keyEqual.addEventListener('click', () => {
   solve(keyEqual.dataset.keyName);
 }, false);
-
-// const containerKeys = document.getElementById('numberKeys');
-// containerKeys.addEventListener('click', addCharacter, false);
 
 const numPadKeyList = document.querySelectorAll('.key-numpad');
 for (let i = 0; i < numPadKeyList.length; i++) {
   let key = numPadKeyList[i];
   key.addEventListener('click', (event) => {
     addCharacter(key.dataset.keyName);
-    event.stopPropagation();
-  });
+  }, false);
 }
 
-window.addEventListener('keyup', runKeyCodeAction);
+window.addEventListener('keydown', runKeyCodeAction);
 
-// All keys have a code "a", but only select keys have codes "b" or "c"
+
+
+
+/**
+  *   Functions
+  */
+
+// Handles keydown events for keyboard shortcuts.
+// All keys have a code "a", but only some keys have codes "b" or "c"
 // Codes "a" and "b" are all unique, but "c" are "shift" variations of "a" codes
 function runKeyCodeAction(event) {
-
-  let withShift = event.shiftKey
-
-  console.log("Key Pressed: keyCode = " + event.keyCode);
   const elementA = document.querySelector(`.key[data-key-code-a="${event.keyCode}"]`);
   const elementB = document.querySelector(`.key[data-key-code-b="${event.keyCode}"]`);
   const elementC = document.querySelector(`.key[data-key-code-c="${event.keyCode}"]`);
   let element = null;
-  // must check C+shift first. ode-c keys are same as code-b keys with shift
+  // must check C+shift first. Some code-c keys are same as code-b keys with shift
   if (elementC && event.shiftKey) {
     element = elementC;
   } else if (elementA || elementB) {
     element = (elementA) ? elementA : elementB;
   }
-  // only run if a key is matched to the event
+  // only run if the key pressed matches a "shortcut"
   if (element !== null) {
-    console.log("element found:");
-    console.log(element);
     let operatorKeyNames = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
     let elementKeyName = element.dataset.keyName;
     classes = element.classList;
@@ -125,24 +122,14 @@ function runKeyCodeAction(event) {
   }
 }
 
+// Updates the number currently being built, and adds it to the display
 function addCharacter(keyName) {
-    console.log("inside addCharacter");
-    console.log("character clicked = " + keyName);
     updateCurNumber(keyName);
-    console.log("after updateCurNumber()");
     updateDisplayAll(numDisplay);
-    console.log("after updateDisplayAll()");
-    console.log("end of addCharacter()");
 }
 
-// clicking (.) or (0-9) resets the curNumber to ["0"] to exit the situation
-// where you are continuing operations from a previous solution.  "changeSign"
-// is allowed on a previous solution, when continuing on with it, but using
-// "changeSign" on a solution, followed by either (.) or (0-9) will still
-// reset curNumber.
+// Update the number currently being built by the user.
 function updateCurNumber(newContent) {
-  console.log("entered updateCurNumber():")
-  console.log(curNumber);
   showIconEqual = false;
   switch (newContent) {
     case "SIGN":
@@ -160,17 +147,17 @@ function updateCurNumber(newContent) {
       curNumberAppendString(newContent);
     }
   }
-  console.log("end of updateCurNumber() - curNumber:");
-  console.log(curNumber);
 }
 
+// Changes sign of number currently being built by the user
 function curNumberChangeSign() {
-  if (curNumberToNumber() != 0) {
+  if (curNumberToNumber() !== 0) {
     curNumberNonNegative = (curNumberNonNegative) ? false : true;
     setNumDisplay(curNumber, curNumberNonNegative);
   }
 }
 
+// Adds a decimal to the number currently being built by the user
 function curNumberAppendDecimal() {
   if (!curNumber.includes(".")) {
     curNumber.push(".");
@@ -178,61 +165,42 @@ function curNumberAppendDecimal() {
   }
 }
 
+// Adds next string (character) to the number currently being built by the user
 function curNumberAppendString(newString) {
-  if ((curNumber.length == 1) && (curNumber[0] == "0")) {
-    console.log("______________________________________");
-    console.log("curNumberAppendString():");
-    console.log("curNumber: ");
-    console.log(curNumber);
-
-
+  if ((curNumber.length === 1) && (curNumber[0] === "0")) {
     curNumber.pop();
-    console.log("curNumber after pop: ");
-    console.log(curNumber);
     curNumber.push(newString);
-    console.log("curNumber after push: ");
-    console.log(curNumber);
   } else {
     curNumber.push(newString);
-    console.log("else branch - curNumber after push: ");
-    console.log(curNumber);
-    console.log("end appendstring()");
   }
   setNumDisplay(curNumber, curNumberNonNegative);
-  console.log("______________________________________");
 }
 
+// sets the next operation to be performed (+ - * /)
 function setNextOperation(operation) {
-  console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
-  console.log("entered setNextOperation");
   // allow changing of operation type before solving.
   showIconEqual = false;
   if (!updateOperationOnly) {
-    if (nextOperation != null) {
+    if (nextOperation !== null) {
       // If use operation key before pressing (=)
-      console.log("nextOperation NOT null");
       solve();
       showIconEqual = true;
     }
     numFirst = curNumberToNumber();
     curNumber = ["0"];
     curNumberNonNegative = true;
-    console.log("numFirst = " + numFirst);
     updateOperationOnly = true;
     // updateOperationOnly resets: end of solve(), and begin of updateCurNumber()
   }
   nextOperation = operation;
-  console.log("nextOperation = " + nextOperation);
   showIconOperation = true;
-  console.log("showIconOperation = " + showIconOperation);
-  console.log("showIconEqual = " + showIconEqual);
   if (powerOn) {
     updateDisplayIcons();
   }
-  console.log("end of setNextOperation");
-  console.log("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
 }
 
+// solve and display the current equation.
+// Posts error to screen for division by Zero.
 function solve() {
   let solution = 0;
   let divisionError = false;
@@ -246,12 +214,10 @@ function solve() {
       solution = numFirst - numSecond;
       break;
     case "MULTIPLY":
-      console.log("Mutliply: 1st = " + numFirst);
-      console.log("Mutliply: 2nd = " + numSecond);
       solution = numFirst * numSecond;
       break;
     case "DIVIDE":
-      if (numSecond == 0) {
+      if (numSecond === 0) {
         divisionError = true;
       } else {
         solution = numFirst / numSecond;
@@ -269,42 +235,38 @@ function solve() {
     solution *= -1;    //numSolution is stored as a positive number
   }
   // Catch "Divide by 0" error
-  if (divisionError == true) {
+  if (divisionError === true) {
     resetGlobalVariables();
     updateDisplayAll("ERROR - DIVIDE BY 0");
-  } else if (solutionFound == true) {
+  } else if (solutionFound === true) {
     numSolution = solution.toString().split("");
     setNumDisplay(numSolution, numSolutionNonNegative);
     showIconOperation = false;
     showIconEqual = true;
     updateDisplayAll(numDisplay);
+    // store solution in case user wants to chain operations
     curNumber = numSolution;
     curNumberNonNegative = numSolutionNonNegative;
     numFirst = null;
     numSecond = null;
     nextOperation = null;
-    // set useSolution.. to "true" - resets to "false" if user clicks (=) or (0-9)
+    // Assume user wants to use solution to chain operations (useSolutionNextOperation).
+    // resets to "false" in updateCurNumber(), via resetCurNumberIfNotUsingSolution()
     useSolutionNextOperation = true;
     updateOperationOnly = false;
   }
 }
 
 // formats a number array (eg: curNumber) with commas for improved display
+// The array must be string representations of numbers and decimals: eg: ["2", ".", "4"]
 function setNumDisplay(numberArray, numberNonNegative) {
-  console.log("---------------------------------------");
-  console.log("Inside setNumDisplay");
   let alteredNumber = numberArray.slice(0);
-  console.log("strippedCurNumber:");
-  console.log(alteredNumber);
   let index = alteredNumber.indexOf(".");
   if (index < 0) {
     index = alteredNumber.length;
-    console.log("decimal: none");
   }
-  console.log("index = " + index);
   let count = 1;
   while (index > 3) {
-    console.log("Inside While loop: on loop " + count);
     index -= 3;
     alteredNumber.splice(index, 0, ",");
     count ++;
@@ -312,12 +274,10 @@ function setNumDisplay(numberArray, numberNonNegative) {
   if (!numberNonNegative) {
     alteredNumber.unshift("-");
   }
-  console.log("final alteredNumber:");
-  console.log(alteredNumber);
-  console.log("---------------------------------------");
   numDisplay = alteredNumber.join("");
 }
 
+// Updates all displays (number and all icons)
 function updateDisplayAll(content) {
   if (powerOn) {
     displayMain.textContent = content;
@@ -325,6 +285,7 @@ function updateDisplayAll(content) {
   }
 }
 
+// Update the Icons displayed for "equal" and the operations (+ - * /)
 function updateDisplayIcons() {
   // set status of Operation Icon
   if (showIconOperation) {
@@ -354,9 +315,20 @@ function updateDisplayIcons() {
   displayIconEqual.textContent = (showIconEqual) ? "=" : "";
 }
 
+// changes array curNumber into its numeric float equivalent.
+// Removes trailing zeros, if after a decimal
+function curNumberToNumber() {
+  let curNumberString = curNumber.join("");
+  let number = parseFloat(curNumberString);
+  if (!curNumberNonNegative) {
+    number *= -1;
+  }
+  return number;
+}
+
 // returns true if under the maxLength. Does not count (.) toward length
 function curNumberUnderMaxLength() {
-  let maxLength = 21;
+  let maxLength = 22;
   let strippedCurNumber = curNumber.filter(item => item !== ".");
   if (strippedCurNumber.length < maxLength) {
     return true;
@@ -366,45 +338,19 @@ function curNumberUnderMaxLength() {
   }
 }
 
-function resetCurNumberIfNotUsingSolution() {
-  if (useSolutionNextOperation == true){
-    curNumber = ["0"];
-    curNumberNonNegative = true;
-    useSolutionNextOperation = false;
-  }
-}
-
-// changes array curNumber into its numeric equivalent.
-// Removes trailing zeros, if after a decimal
-function curNumberToNumber() {
-  let curNumberString = curNumber.join("");
-  let number = parseFloat(curNumberString);
-  if (!curNumberNonNegative) {
-      number *= -1;
-  }
-  return number;
-}
-
-// removes last digit from the number currently being entered.
+// removes last digit from the number currently being built by the user.
 // Does not affect display after clicking an operator (+-*/) or (=)
 function removeLastDigit() {
-  console.log("useSolution = " + useSolutionNextOperation);
-  if ((!curNumber.length == 1) || (!curNumber[0] == "0")) {
+  if ((curNumber.length !== 1) || (curNumber[0] !== "0")) {
     // function in all cases except when curNumber is ["0"]
-    if (useSolutionNextOperation == false) {
+    if (!useSolutionNextOperation) {
       // prevent functioning after an operator: (+-*/) or (=)
-      console.log("remove: curNubmer before pop:");
-      console.log(curNumber);
       curNumber.pop();
-      console.log("remove: curNubmer after pop:");
-      console.log(curNumber);
-      console.log("curNumber length = " + curNumber.length);
-      if (curNumber.length == 0) {
-        console.log("reset curNumber in IF block");
+      if (curNumber.length === 0) {
         curNumber = ["0"];
         curNumberNonNegative = true;
-      } else if ((curNumber.length == 1) && (curNumber[0] == "0")) {
-        // if curNumber reduced to ["0"], ensure no negative
+      } else if ((curNumber.length === 1) && (curNumber[0] === "0")) {
+        // if curNumber reduced to ["0"], ensure does not show negative
         curNumberNonNegative = true;
       }
       setNumDisplay(curNumber, curNumberNonNegative);
@@ -413,13 +359,24 @@ function removeLastDigit() {
   }
 }
 
+function resetCurNumberIfNotUsingSolution() {
+  if (useSolutionNextOperation === true){
+    curNumber = ["0"];
+    curNumberNonNegative = true;
+    useSolutionNextOperation = false;
+  }
+}
+
+// Adds "hightlighted" class to keys
 function highlightKey(dataKeyName) {
   if (powerOn) {
-    let selectedKey = document.querySelector("[data-key-name=" + CSS.escape(dataKeyName) + "]");
+    let selectedKey = document.querySelector("[data-key-name=" +
+        CSS.escape(dataKeyName) + "]");
     selectedKey.classList.add('highlighted');
   }
 }
 
+// clears "highlighted" class from all operation keys (+ - * / =)
 function removeOperationKeyHighlightAll() {
   let highlightedKeys = document.querySelectorAll(".highlighted");
   [...highlightedKeys].forEach( item => {
@@ -430,6 +387,7 @@ function removeOperationKeyHighlightAll() {
 
 }
 
+// turns caluculator on and off
 function togglePower() {
   if (powerOn) {
      numDisplay = "";
@@ -445,15 +403,21 @@ function togglePower() {
    [...displays].forEach( item => item.classList.toggle('display-off'));
 }
 
-function resetCalculator() {
-  resetGlobalVariables();
-  setNumDisplay(curNumber, curNumberNonNegative);
-  updateDisplayAll(numDisplay);
+// resets display to zero, but only affects numbers being currently built by user.
+// does not clear any numbers or operations in memory (eg: numFirst, nextOperation)
+function clearDisplay() {
+  // Only clear screen if number was manually entered
+  if (!useSolutionNextOperation) {
+    curNumber = ["0"];
+    curNumberNonNegative = true;
+    setNumDisplay(curNumber, curNumberNonNegative);
+    updateDisplayAll(numDisplay);
+  }
 }
 
-function clearDisplay() {
-  curNumber = ["0"];
-  curNumberNonNegative = true;
+// completely resets calculator to initial condition, but does not affect power
+function resetCalculator() {
+  resetGlobalVariables();
   setNumDisplay(curNumber, curNumberNonNegative);
   updateDisplayAll(numDisplay);
 }
