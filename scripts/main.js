@@ -12,7 +12,7 @@ let numSolution = [];
 let numSolutionNonNegative = true;
 let nextOperation = null;
 // Indicates solution value is being used as first number of next operation
-let useSolutionNextOperation = false;
+let useSameCurNumberNextOperation = false;
 // Idicates that user changed operation type before solving
 let updateOperationOnly = false;
 let showIconOperation = false;
@@ -131,23 +131,24 @@ function addCharacter(keyName) {
 // Update the number currently being built by the user.
 function updateCurNumber(newContent) {
   showIconEqual = false;
-  switch (newContent) {
-    case "SIGN":
+  if (newContent === "SIGN") {
+      // 'change sign' allowed to alter curNumber when continuing from prior work
       curNumberChangeSign();
-      break;
-    case ".":
-      updateOperationOnly = false; // enable solve() block in setNextOperation()
-      resetCurNumberIfNotUsingSolution();
-      if (curNumberUnderMaxLength()) {
-        curNumberAppendDecimal();
+  } else {
+    // all other numpad keys (0-9) and (.)
+    updateOperationOnly = false; // enables solve() block in setNextOperation()
+    if (useSameCurNumberNextOperation === true){
+      // user is manually building a new number after continuing from prior work
+      resetCurNumber();
+      useSameCurNumberNextOperation = false;
+    }
+    if (curNumberUnderMaxLength()) {
+      if (newContent === ".") {
+        curNumberAppendDecimal();  // key (.)
+      } else {
+        curNumberAppendString(newContent);  // keys (0-9)
       }
-      break;
-    default: // keys 0-9
-      updateOperationOnly = false; // enable solve() block in setNextOperation()
-      resetCurNumberIfNotUsingSolution();
-      if (curNumberUnderMaxLength()) {
-      curNumberAppendString(newContent);
-      }
+    }
   }
 }
 
@@ -181,15 +182,14 @@ function curNumberAppendString(newString) {
 // sets the next operation to be performed (+ - * /)
 function setNextOperation(operation) {
   // allow changing of operation type before solving.
-  // showIconEqual = false;
   if (!updateOperationOnly) {
     if (nextOperation !== null) {
       // If use operation key before pressing (=)
       solve();
     }
     numFirst = curNumberToNumber();
-    curNumber = ["0"];
-    curNumberNonNegative = true;
+    console.log("numFirst = " + numFirst);
+    useSameCurNumberNextOperation = true;
     updateOperationOnly = true; //resets at end of solve(), & begin of updateCurNumber()
   }
   nextOperation = operation;
@@ -206,9 +206,12 @@ function solve() {
   let divisionError = false;
   let solutionFound = true;
   numSecond = curNumberToNumber();
+  console.log("numSecond = " + numSecond);
   switch (nextOperation) {
     case "ADD":
+      console.log("Add Block");
       solution = numFirst + numSecond;
+      console.log("solution in Add Block = " + solution);
       break;
     case "SUBTRACT":
       solution = numFirst - numSecond;
@@ -240,6 +243,11 @@ function solve() {
     updateDisplayAll("ERROR - DIVIDE BY 0");
   } else if (solutionFound === true) {
     numSolution = solution.toString().split("");
+    console.log("Solution = " + solution);
+    console.log("numSol non-neg = " + numSolutionNonNegative);
+    console.log("numSolution array:");
+    console.table(numSolution);
+    console.log("============================================");
     setNumDisplay(numSolution, numSolutionNonNegative);
     showIconOperation = false;
     showIconEqual = true;
@@ -250,9 +258,9 @@ function solve() {
     numFirst = null;
     numSecond = null;
     nextOperation = null;
-    // Assume user wants to use solution to chain operations (useSolutionNextOperation).
-    // resets to "false" in updateCurNumber(), via resetCurNumberIfNotUsingSolution()
-    useSolutionNextOperation = true;
+    // Assume user will use solution/curNumber to chain operations...
+    // reset option (to "false") exists in updateCurNumber(), via resetCurNumber()
+    useSameCurNumberNextOperation = true;
     updateOperationOnly = false;
   }
 }
@@ -324,14 +332,13 @@ function curNumberToNumber() {
   return number;
 }
 
-// returns true if under the maxLength. Does not count (.) toward length
+// returns true if under the maxLength. Considers (.) toward length.
 function curNumberUnderMaxLength() {
   let maxLength = 20;
-  let strippedCurNumber = curNumber.filter(item => item !== ".");
-  if (strippedCurNumber.length < maxLength) {
+  if (curNumber.length < maxLength) {
     return true;
   } else {
-    alert("Maximum characters reached. \n\nNo more digits can be added");
+    alert("Maximum characters reached.");
     return false;
   }
 }
@@ -341,7 +348,7 @@ function curNumberUnderMaxLength() {
 function removeLastDigit() {
   if ((curNumber.length !== 1) || (curNumber[0] !== "0")) {
     // function in all cases except when curNumber is ["0"]
-    if (!useSolutionNextOperation) {
+    if (!useSameCurNumberNextOperation) {
       // prevent functioning after an operator: (+-*/) or (=)
       curNumber.pop();
       if (curNumber.length === 0) {
@@ -357,12 +364,9 @@ function removeLastDigit() {
   }
 }
 
-function resetCurNumberIfNotUsingSolution() {
-  if (useSolutionNextOperation === true){
-    curNumber = ["0"];
-    curNumberNonNegative = true;
-    useSolutionNextOperation = false;
-  }
+function resetCurNumber() {
+  curNumber = ["0"];
+  curNumberNonNegative = true;
 }
 
 // Adds "hightlighted" class to keys
@@ -404,7 +408,7 @@ function togglePower() {
 // does not clear any numbers or operations in memory (eg: numFirst, nextOperation)
 function clearDisplay() {
   // Only clear screen if number was manually entered
-  if (!useSolutionNextOperation) {
+  if (!useSameCurNumberNextOperation) {
     curNumber = ["0"];
     curNumberNonNegative = true;
     setNumDisplay(curNumber, curNumberNonNegative);
@@ -429,7 +433,7 @@ function resetGlobalVariables() {
   numSolution = [];
   numSolutionNonNegative = true;
   nextOperation = null;
-  useSolutionNextOperation = false;
+  useSameCurNumberNextOperation = false;
   updateOperationOnly = false;
   showIconOperation = false;
   showIconEqual = false;

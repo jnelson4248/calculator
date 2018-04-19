@@ -14,11 +14,11 @@ html, body {
   width: 60vmin;
   border: 0.8vmin solid #99004d;
   border-radius: 6vmin;
-  margin: 5vmin auto;
+  margin: 2vmin auto 4vmin;
   padding: 5vmin 0;
   background-color: #ffccee;
   background-image: url("../images/vichy.png");
-  box-shadow: 0.4vmin 0.4vmin 0.5vmin 0px rgba(0,0,0,0.75);
+  box-shadow: 0.4vmin 0.4vmin 0.5vmin 0 rgba(0,0,0,0.75);
 }
 
 .container-power {
@@ -34,7 +34,7 @@ html, body {
   height: 7vmin;
   display: grid;
   grid-template-columns: 11fr 1fr;
-  margin: 0 auto 8vmin;
+  margin: 0 auto 6vmin;
 }
 
 .display {
@@ -56,7 +56,7 @@ html, body {
   border-right-width: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  padding-right: 0.5vmin;
+  padding-right: 0.2vmin;
   flex-flow: nowrap row;
   justify-content: flex-end;
 }
@@ -118,7 +118,7 @@ html, body {
   background-color: #ffe6f2;
   border: 0.3vmin solid #b30059;
   border-radius: 4vmin;
-  box-shadow: 0.4vmin 0.4vmin 0.5vmin 0px rgba(0,0,0,0.75);
+  box-shadow: 0.4vmin 0.4vmin 0.5vmin 0 rgba(0,0,0,0.75);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -149,4 +149,17 @@ html, body {
 -moz-user-select: none;
 -ms-user-select: none;
 user-select: none;
+}
+
+.instructions {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.7vmin;
+  color: #99004d;
+  width: 60vmin;
+  border: 0.3vmin solid #b30059;
+  border-radius: 2vmin;
+  padding: 1vmin 2vmin;
+  margin: 0 auto;
+  background-color: #ffe6f2;
+  box-shadow: 0.4vmin 0.4vmin 0.5vmin 0 rgba(0,0,0,0.75);
 }
