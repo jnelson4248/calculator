@@ -57,7 +57,7 @@ keyAdd.addEventListener('click', () => {
 
 const keyEqual = document.getElementById('keyEqual');
 keyEqual.addEventListener('click', () => {
-  solve(keyEqual.dataset.keyName);
+    solve(keyEqual.dataset.keyName);
 }, false);
 
 const numPadKeyList = document.querySelectorAll('.key-numpad');
@@ -179,18 +179,19 @@ function curNumberAppendString(newString) {
 // sets the next operation to be performed (+ - * /)
 function setNextOperation(operation) {
   // allow changing of operation type before solving.
-  showIconEqual = false;
+  // showIconEqual = false;
   if (!updateOperationOnly) {
     if (nextOperation !== null) {
       // If use operation key before pressing (=)
       solve();
-      showIconEqual = true;
+      // showIconEqual = true;
     }
     numFirst = curNumberToNumber();
     curNumber = ["0"];
     curNumberNonNegative = true;
-    updateOperationOnly = true;
-    // updateOperationOnly resets: end of solve(), and begin of updateCurNumber()
+    updateOperationOnly = true; //resets at end of solve(), & begin of updateCurNumber()
+  } else {
+    // showIconEqual = false;
   }
   nextOperation = operation;
   showIconOperation = true;
@@ -206,6 +207,10 @@ function solve() {
   let divisionError = false;
   let solutionFound = true;
   numSecond = curNumberToNumber();
+  console.log("---------------");
+  console.log("curNumber:");
+  console.table(curNumber);
+  console.log("numSecond set to: " + numSecond);
   switch (nextOperation) {
     case "ADD":
       solution = numFirst + numSecond;
@@ -328,12 +333,12 @@ function curNumberToNumber() {
 
 // returns true if under the maxLength. Does not count (.) toward length
 function curNumberUnderMaxLength() {
-  let maxLength = 21;
+  let maxLength = 20;
   let strippedCurNumber = curNumber.filter(item => item !== ".");
   if (strippedCurNumber.length < maxLength) {
     return true;
   } else {
-    alert("Maximum characters reached. No more digits can be added");
+    alert("Maximum characters reached. \n\nNo more digits can be added");
     return false;
   }
 }

@@ -2,11 +2,11 @@
 
   * {
     box-sizing: border-box;
+    /* border: 1px solid red; */
   }
 
 html, body {
   background-color: #f2f2f2;
-  font-family: Arial, Helvetica, sans-serif;
   font-family: 'Roboto Mono', monospace;
 }
 
@@ -38,7 +38,7 @@ html, body {
 }
 
 .display {
-  font-size: 3.1vmin;
+  font-size: 3.2vmin;
   background-color: #d9d9d9;
   border: 0.5vmin solid #99004d;
   border-radius: 1.8vmin;
@@ -52,21 +52,28 @@ html, body {
 }
 
 .display-main {
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3vmin;
   border-right-width: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  padding-right: 0.5vmin;
   flex-flow: nowrap row;
   justify-content: flex-end;
 }
 
-.display-icons {
+.container-icons {
+  font-size: 2.8vmin;
   line-height: 70%;
   border-left-width: 0;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   flex-flow: nowrap column;
   justify-content: center;
+}
+
+.display-icon {
+  height: 2vmin;
+  width: 2vmin;
 }
 
 .container-keys {

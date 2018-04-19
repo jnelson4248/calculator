@@ -45,7 +45,7 @@ Performs the basic functions of a calculator: Addition, Subtraction, Multiplicat
 
 * The "/" keyboard shortcut for divide functions in Firefox, but also open the default shortcut command "find/search in page".  After pressing "/", the user needs to close the "search" input box (or let it fade out) before continuing.  This does not seem to occur in Chrome.
 
-* The display is limited to 21 characters.  Math involving very large or very small numbers has not been set up to be handled well.  And some configurations of input may not work.  
+* The display is limited to 20 characters.  Math involving very large or very small numbers has not been set up to be handled well.  And some configurations of input may not work.  
 
 * Though the calculator will display extremely large or small numbers in exponential notation, the user can not input numbers using exponential notation.  
 
