@@ -138,14 +138,16 @@ function updateCurNumber(newContent) {
     case ".":
       updateOperationOnly = false; // enable solve() block in setNextOperation()
       resetCurNumberIfNotUsingSolution();
-      curNumberAppendDecimal();
+      if (curNumberUnderMaxLength()) {
+        curNumberAppendDecimal();
+      }
       break;
     default: // keys 0-9
       updateOperationOnly = false; // enable solve() block in setNextOperation()
       resetCurNumberIfNotUsingSolution();
       if (curNumberUnderMaxLength()) {
       curNumberAppendString(newContent);
-    }
+      }
   }
 }
 
@@ -184,14 +186,11 @@ function setNextOperation(operation) {
     if (nextOperation !== null) {
       // If use operation key before pressing (=)
       solve();
-      // showIconEqual = true;
     }
     numFirst = curNumberToNumber();
     curNumber = ["0"];
     curNumberNonNegative = true;
     updateOperationOnly = true; //resets at end of solve(), & begin of updateCurNumber()
-  } else {
-    // showIconEqual = false;
   }
   nextOperation = operation;
   showIconOperation = true;
@@ -207,10 +206,6 @@ function solve() {
   let divisionError = false;
   let solutionFound = true;
   numSecond = curNumberToNumber();
-  console.log("---------------");
-  console.log("curNumber:");
-  console.table(curNumber);
-  console.log("numSecond set to: " + numSecond);
   switch (nextOperation) {
     case "ADD":
       solution = numFirst + numSecond;
@@ -237,7 +232,7 @@ function solve() {
     numSolutionNonNegative = true;
   } else {
     numSolutionNonNegative = false;
-    solution *= -1;    //numSolution is stored as a positive number
+    solution *= -1;    //numSolution is stored as a non-negative number
   }
   // Catch "Divide by 0" error
   if (divisionError === true) {
@@ -270,11 +265,9 @@ function setNumDisplay(numberArray, numberNonNegative) {
   if (index < 0) {
     index = alteredNumber.length;
   }
-  let count = 1;
   while (index > 3) {
     index -= 3;
     alteredNumber.splice(index, 0, ",");
-    count ++;
   }
   if (!numberNonNegative) {
     alteredNumber.unshift("-");
