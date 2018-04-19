@@ -328,7 +328,7 @@ function curNumberToNumber() {
 
 // returns true if under the maxLength. Does not count (.) toward length
 function curNumberUnderMaxLength() {
-  let maxLength = 22;
+  let maxLength = 21;
   let strippedCurNumber = curNumber.filter(item => item !== ".");
   if (strippedCurNumber.length < maxLength) {
     return true;
@@ -370,8 +370,7 @@ function resetCurNumberIfNotUsingSolution() {
 // Adds "hightlighted" class to keys
 function highlightKey(dataKeyName) {
   if (powerOn) {
-    let selectedKey = document.querySelector("[data-key-name=" +
-        CSS.escape(dataKeyName) + "]");
+    let selectedKey = document.querySelector("[data-key-name=" + dataKeyName + "]");
     selectedKey.classList.add('highlighted');
   }
 }
