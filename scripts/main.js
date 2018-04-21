@@ -71,8 +71,6 @@ for (let i = 0; i < numPadKeyList.length; i++) {
 window.addEventListener('keydown', runKeyCodeAction);
 
 
-
-
 /**
   *   Functions
   */
@@ -85,14 +83,14 @@ function runKeyCodeAction(event) {
   const elementB = document.querySelector(`.key[data-key-code-b="${event.keyCode}"]`);
   const elementC = document.querySelector(`.key[data-key-code-c="${event.keyCode}"]`);
   let element = null;
-  // must check C+shift first. Some code-c keys are same as code-b keys with shift
+  // must check Code-c+shift first. Some code-c keys are same as code-b keys with shift
   if (elementC && event.shiftKey) {
     element = elementC;
   } else if (elementA || elementB) {
     element = (elementA) ? elementA : elementB;
   }
   // only run if the key pressed matches a "shortcut"
-  if (element !== null) {
+  if (element != null) {
     let operatorKeyNames = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
     let elementKeyName = element.dataset.keyName;
     classes = element.classList;
@@ -131,19 +129,19 @@ function addCharacter(keyName) {
 // Update the number currently being built by the user.
 function updateCurNumber(newContent) {
   showIconEqual = false;
-  if (newContent === "SIGN") {
+  if (newContent == "SIGN") {
       // 'change sign' allowed to alter curNumber when continuing from prior work
       curNumberChangeSign();
   } else {
     // all other numpad keys (0-9) and (.)
     updateOperationOnly = false; // enables solve() block in setNextOperation()
-    if (useSameCurNumberNextOperation === true){
+    if (useSameCurNumberNextOperation == true){
       // user is manually building a new number after continuing from prior work
       resetCurNumber();
       useSameCurNumberNextOperation = false;
     }
     if (curNumberUnderMaxLength()) {
-      if (newContent === ".") {
+      if (newContent == ".") {
         curNumberAppendDecimal();  // key (.)
       } else {
         curNumberAppendString(newContent);  // keys (0-9)
@@ -154,7 +152,7 @@ function updateCurNumber(newContent) {
 
 // Changes sign of number currently being built by the user
 function curNumberChangeSign() {
-  if (curNumberToNumber() !== 0) {
+  if (curNumberToNumber() != 0) {
     curNumberNonNegative = (curNumberNonNegative) ? false : true;
     setNumDisplay(curNumber, curNumberNonNegative);
   }
@@ -170,7 +168,7 @@ function curNumberAppendDecimal() {
 
 // Adds next string (character) to the number currently being built by the user
 function curNumberAppendString(newString) {
-  if ((curNumber.length === 1) && (curNumber[0] === "0")) {
+  if ((curNumber.length == 1) && (curNumber[0] == "0")) {
     curNumber.pop();
     curNumber.push(newString);
   } else {
@@ -183,12 +181,11 @@ function curNumberAppendString(newString) {
 function setNextOperation(operation) {
   // allow changing of operation type before solving.
   if (!updateOperationOnly) {
-    if (nextOperation !== null) {
+    if (nextOperation != null) {
       // If use operation key before pressing (=)
       solve();
     }
     numFirst = curNumberToNumber();
-    console.log("numFirst = " + numFirst);
     useSameCurNumberNextOperation = true;
     updateOperationOnly = true; //resets at end of solve(), & begin of updateCurNumber()
   }
@@ -206,12 +203,9 @@ function solve() {
   let divisionError = false;
   let solutionFound = true;
   numSecond = curNumberToNumber();
-  console.log("numSecond = " + numSecond);
   switch (nextOperation) {
     case "ADD":
-      console.log("Add Block");
       solution = numFirst + numSecond;
-      console.log("solution in Add Block = " + solution);
       break;
     case "SUBTRACT":
       solution = numFirst - numSecond;
@@ -220,14 +214,14 @@ function solve() {
       solution = numFirst * numSecond;
       break;
     case "DIVIDE":
-      if (numSecond === 0) {
+      if (numSecond == 0) {
         divisionError = true;
       } else {
         solution = numFirst / numSecond;
       }
       break;
     default:
-      // do nothing if (=) clicked before clicking (=-*/)
+      // do nothing if (=) clicked before clicking (+-*/)
       solutionFound = false;
   }
   // cover both cases to ensure previous solutions are completely reset
@@ -238,16 +232,11 @@ function solve() {
     solution *= -1;    //numSolution is stored as a non-negative number
   }
   // Catch "Divide by 0" error
-  if (divisionError === true) {
+  if (divisionError == true) {
     resetGlobalVariables();
     updateDisplayAll("ERROR - DIVIDE BY 0");
-  } else if (solutionFound === true) {
+  } else if (solutionFound == true) {
     numSolution = solution.toString().split("");
-    console.log("Solution = " + solution);
-    console.log("numSol non-neg = " + numSolutionNonNegative);
-    console.log("numSolution array:");
-    console.table(numSolution);
-    console.log("============================================");
     setNumDisplay(numSolution, numSolutionNonNegative);
     showIconOperation = false;
     showIconEqual = true;
@@ -346,15 +335,15 @@ function curNumberUnderMaxLength() {
 // removes last digit from the number currently being built by the user.
 // Does not affect display after clicking an operator (+-*/) or (=)
 function removeLastDigit() {
-  if ((curNumber.length !== 1) || (curNumber[0] !== "0")) {
+  if ((curNumber.length != 1) || (curNumber[0] != "0")) {
     // function in all cases except when curNumber is ["0"]
     if (!useSameCurNumberNextOperation) {
       // prevent functioning after an operator: (+-*/) or (=)
       curNumber.pop();
-      if (curNumber.length === 0) {
+      if (curNumber.length == 0) {
         curNumber = ["0"];
         curNumberNonNegative = true;
-      } else if ((curNumber.length === 1) && (curNumber[0] === "0")) {
+      } else if ((curNumber.length == 1) && (curNumber[0] == "0")) {
         // if curNumber reduced to ["0"], ensure does not show negative
         curNumberNonNegative = true;
       }
