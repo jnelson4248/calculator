@@ -90,7 +90,7 @@ function runKeyCodeAction(event) {
     element = (elementA) ? elementA : elementB;
   }
   // only run if the key pressed matches a "shortcut"
-  if (element != null) {
+  if (element !== null) {
     let operatorKeyNames = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE"]
     let elementKeyName = element.dataset.keyName;
     classes = element.classList;
@@ -129,19 +129,19 @@ function addCharacter(keyName) {
 // Update the number currently being built by the user.
 function updateCurNumber(newContent) {
   showIconEqual = false;
-  if (newContent == "SIGN") {
+  if (newContent === "SIGN") {
       // 'change sign' allowed to alter curNumber when continuing from prior work
       curNumberChangeSign();
   } else {
     // all other numpad keys (0-9) and (.)
     updateOperationOnly = false; // enables solve() block in setNextOperation()
-    if (useSameCurNumberNextOperation == true){
+    if (useSameCurNumberNextOperation === true){
       // user is manually building a new number after continuing from prior work
       resetCurNumber();
       useSameCurNumberNextOperation = false;
     }
     if (curNumberUnderMaxLength()) {
-      if (newContent == ".") {
+      if (newContent === ".") {
         curNumberAppendDecimal();  // key (.)
       } else {
         curNumberAppendString(newContent);  // keys (0-9)
@@ -152,7 +152,7 @@ function updateCurNumber(newContent) {
 
 // Changes sign of number currently being built by the user
 function curNumberChangeSign() {
-  if (curNumberToNumber() != 0) {
+  if (curNumberToNumber() !== 0) {
     curNumberNonNegative = (curNumberNonNegative) ? false : true;
     setNumDisplay(curNumber, curNumberNonNegative);
   }
@@ -168,7 +168,7 @@ function curNumberAppendDecimal() {
 
 // Adds next string (character) to the number currently being built by the user
 function curNumberAppendString(newString) {
-  if ((curNumber.length == 1) && (curNumber[0] == "0")) {
+  if ((curNumber.length === 1) && (curNumber[0] === "0")) {
     curNumber.pop();
     curNumber.push(newString);
   } else {
@@ -181,7 +181,7 @@ function curNumberAppendString(newString) {
 function setNextOperation(operation) {
   // allow changing of operation type before solving.
   if (!updateOperationOnly) {
-    if (nextOperation != null) {
+    if (nextOperation !== null) {
       // If use operation key before pressing (=)
       solve();
     }
@@ -214,7 +214,7 @@ function solve() {
       solution = numFirst * numSecond;
       break;
     case "DIVIDE":
-      if (numSecond == 0) {
+      if (numSecond === 0) {
         divisionError = true;
       } else {
         solution = numFirst / numSecond;
@@ -232,10 +232,10 @@ function solve() {
     solution *= -1;    //numSolution is stored as a non-negative number
   }
   // Catch "Divide by 0" error
-  if (divisionError == true) {
+  if (divisionError === true) {
     resetGlobalVariables();
     updateDisplayAll("ERROR - DIVIDE BY 0");
-  } else if (solutionFound == true) {
+  } else if (solutionFound === true) {
     numSolution = solution.toString().split("");
     setNumDisplay(numSolution, numSolutionNonNegative);
     showIconOperation = false;
@@ -335,15 +335,15 @@ function curNumberUnderMaxLength() {
 // removes last digit from the number currently being built by the user.
 // Does not affect display after clicking an operator (+-*/) or (=)
 function removeLastDigit() {
-  if ((curNumber.length != 1) || (curNumber[0] != "0")) {
+  if ((curNumber.length !== 1) || (curNumber[0] !== "0")) {
     // function in all cases except when curNumber is ["0"]
     if (!useSameCurNumberNextOperation) {
       // prevent functioning after an operator: (+-*/) or (=)
       curNumber.pop();
-      if (curNumber.length == 0) {
+      if (curNumber.length === 0) {
         curNumber = ["0"];
         curNumberNonNegative = true;
-      } else if ((curNumber.length == 1) && (curNumber[0] == "0")) {
+      } else if ((curNumber.length === 1) && (curNumber[0] === "0")) {
         // if curNumber reduced to ["0"], ensure does not show negative
         curNumberNonNegative = true;
       }
