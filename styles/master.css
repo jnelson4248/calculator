@@ -150,7 +150,7 @@ html, body {
 user-select: none;
 }
 
-.instructions {
+.instructions-link-panel {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.7vmin;
   color: #99004d;
@@ -161,4 +161,39 @@ user-select: none;
   margin: 0 auto;
   background-color: #ffe6f2;
   box-shadow: 0.4vmin 0.4vmin 0.5vmin 0 rgba(0,0,0,0.75);
+}
+
+/**
+  *   Instructions Page
+  */
+
+.instructions-main {
+  width: 80vmin;
+  margin: 5vmin auto;
+  padding: 5vmin;
+  color: #99004d;
+}
+
+.instructions-main p {
+  color: black;
+}
+
+.instructions-section {
+  padding-top: 2.5vmin;
+}
+
+.keymap {
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.keymap th {
+  border-bottom: 1px solid #99004d;
+  padding-bottom: 5px;
+}
+
+.keymap td {
+  color: black;
+  padding-top: 5px;
 }

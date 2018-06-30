@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Instructions - Calculator</title>
+     <link href="styles/normalize-necolas.css" rel="stylesheet" type="text/css">
+    <link href="styles/master.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container-main instructions-main">
+
+
+    <h1>Calculator</h1>
+    <p>A Simple calculator using HTML and JavaScript.</p>
+
+    <h3 class="instructions-section">Description:</h3>
+    <p>
+      Performs the basic functions of a calculator: Addition, Subtraction, Multiplication, and Division.  However, it does add several extra basic features:
+    </p>
+
+    <h3 class="instructions-section">Features:</h3>
+
+    <ul>
+      <li>
+        <p>
+          Equations can be chained after using the "equal" key (=), by pressing an operator button to use the solution as the first operand (eg: 1 + 2 = 3 \* 4 = 12).  You can also continue equations by stacking results simply using the operators (eg: 1 + 2 \* 3 - 1 / 2 = 4).  However, the stacking of operators is non-intelligent, meaning the order is simply read from left to right as they are keyed in (for example, no precedence is given to multiplication or division before addition and subtraction).
+        </p>
+      </li>
+      <li>
+        <p>
+          The currently selected operator appears as an icon in the display screen while active, and the respective calculator key appears highlighted.  The currently selected operator key can also be changed/corrected (up until you begin keying in the second operand number), with the last selected operator ultimately being performed (eg: 2 + \* 3 = 6). The display also uses an icon to indicate when a solution is being shown as a result of using the "equal" key (as "="), or when the solution being displayed has become the first number of a new expression (as: "- =", "+ =", "\* =", or "/ =").
+        </p>
+      </li>
+      <li>
+        <p>
+          If the "equal" key (=) is used to solve an expression without having manually keyed in a second operand, the calculator will assume the existing displayed number (the first operand) to also be the second operand (eg: 1 + = 2 ... being interpreted as 1 + 1 = 0, or 3 \* = 9 ... being interpreted as 3 * 3 = 9).  The user can change the sign of the existing displayed number without resetting it (eg: 1 + 'SIGN' = 0 ... being interpreted as 1 + (-1) = 0).  However, manually keying in either a number or decimal point will reset the number, resulting in the normal and expected operation.
+        </p>
+      </li>
+      <li>
+        <p>
+          "Reset" - Clears all numbers and expressions from memory.
+        </p>
+      </li>
+      <li>
+        <p>
+          "Clear" - Deletes the current, manually entered input (eg: 2 + 3 Clear 5 = 7). "Clear" has no effect on solutions (when the "=" is displayed alone), nor carried-over values that are not manually entered, and does not clear any operations or solutions in memory.
+        </p>
+      </li>
+      <li>
+        <p>
+          "Del" - Deletes the last digit of the current manually entered input, similar to "backspace" ("backspace" is actually the shortcut key). "Del" also has no effect on solutions (when the "=" is displayed alone), nor carried-over values that are not manually entered.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          "Power" - Turns on and off the calculator.
+        </p>
+      </li>
+      <li>
+        <p>
+          All keys also have at least one keyboard shortcut (see keyboard-map below)
+        </p>
+      </li>
+    </ul>
+
+    <h3 class="instructions-section">Keyboard Map:</h3>
+
+    <table class="keymap">
+      <tr>
+        <th>Calculator Key</th>
+        <th>QUERTY Keyboard</th>
+        <th>NumPad</th>
+      </tr>
+      <tr>
+        <td>0-9</td>
+        <td>0-9</td>
+        <td>0-9</td>
+      </tr>
+      <tr>
+        <td>/</td>
+        <td>/</td>
+        <td>/</td>
+      </tr>
+      <tr>
+        <td>*</td>
+        <td>shift 8</td>
+        <td>*</td>
+      </tr>
+      <tr>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>+</td>
+        <td>shift =</td>
+        <td>+</td>
+      </tr>
+      <tr>
+        <td>=</td>
+        <td>=</td>
+        <td>enter</td>
+      </tr>
+      <tr>
+        <td>+/-</td>
+        <td>s</td>
+        <td>(no shortcut)</td>
+      </tr>
+      <tr>
+        <td>.</td>
+        <td>.</td>
+        <td>.</td>
+      </tr>
+      <tr>
+        <td>Reset</td>
+        <td>r</td>
+        <td>(no shortcut)</td>
+      </tr>
+      <tr>
+        <td>Clear</td>
+        <td>c</td>
+        <td>(no shortcut)</td>
+      </tr>
+      <tr>
+        <td>Del</td>
+        <td>d</td>
+        <td>(no shortcut)</td>
+      </tr>
+    </table>
+
+    <h3 class="instructions-section">Known Issues:</h3>
+
+    <ul>
+      <li>
+        <p>
+          The "/" keyboard shortcut for divide functions in Firefox, but also open the default shortcut command "find/search in page".  After pressing "/", the user needs to close the "search" input box (or let it fade out) before continuing.  This does not seem to occur in Chrome.
+        </p>
+      </li>
+      <li>
+        <p>
+          The display is limited to 20 characters.  Math involving very large or very small numbers has not been set up to be handled well.  And some configurations of input may not work.
+        </p>
+      </li>
+      <li>
+        <p>
+          Though the calculator will display extremely large or small numbers in exponential notation, the user can not input numbers using exponential notation.
+        </p>
+      </li>
+      <li>
+        <p>
+          This calculator can not be relied upon for important, precise calculations.  The math is handled in a simple way, using floats. Therefore calculations sometimes result in inaccurate solutions (eg: 6.3 x 9 = 56.699999999999996, or: 12,345,678,901,234,560 + 1 = 12,345,678,901,234,560).  This project (at least in version 1) is more about code structure and organization, than creating a precise mathematical tool.
+        </p>
+      </li>
+      <li>
+        <p>
+          The Power button may be removed in later versions, as it serves no actual purpose other than pseudo-realism, and would probably prove to be annoying to anyone who actually uses the application regularly.
+        </p>
+      </li>
+      <li>
+        <p>
+          The Event Listener for keypad mouse clicks seems to occasionally not register.  I have accepted this behavior in this version, as it does not occur very often.
+        </p>
+      </li>
+    </ul>
+    <div  class="instructions-section">
+      <span>Open a fresh <a href="index.html">Calculator</a> session.</span>
+    </div>
+    </div>
+  </body>
+</html>
